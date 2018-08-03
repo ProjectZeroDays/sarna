@@ -23,6 +23,7 @@ class User(Base, db.Model):
 
     source = db.Column(Enum(AuthSource), default=AuthSource.database, nullable=False)
     passwd = db.Column(db.String(128))
+    access_token = db.Column(db.String(128), nullable=True, unique=True)
 
     creation_date = db.Column(db.DateTime, default=lambda: datetime.now(), nullable=False)
     last_access = db.Column(db.DateTime)

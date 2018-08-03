@@ -6,8 +6,8 @@ from sarna.commands import user_cli
 from sarna.core import app
 from sarna.core import asset
 from sarna.core.auth import login_manager
-from sarna.core.security import csrf, limiter
-from sarna.routes import clients, index, findings, users, assessments
+from sarna.core.security import csrf, limiter, jwt
+from sarna.routes import clients, index, findings, users, assessments, api
 
 
 def error_handler(err):
@@ -27,6 +27,7 @@ def error_handler(err):
     return render_template('error.html', **context), context['code']
 
 
+jwt.init_app(app)
 csrf.init_app(app)
 limiter.init_app(app)
 asset.init_app(app)
@@ -39,6 +40,7 @@ app.register_blueprint(clients.blueprint, url_prefix='/clients')
 app.register_blueprint(assessments.blueprint, url_prefix='/assessments')
 app.register_blueprint(findings.blueprint, url_prefix='/findings')
 app.register_blueprint(users.blueprint, url_prefix='/users')
+app.register_blueprint(api.blueprint, url_prefix='/api/v1')
 
 app.register_error_handler(400, error_handler)
 app.register_error_handler(401, error_handler)

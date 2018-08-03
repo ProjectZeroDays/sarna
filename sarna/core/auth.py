@@ -16,6 +16,18 @@ login_manager.login_message_category = 'success'
 current_user: User = current_user
 
 
+@login_manager.request_loader
+def load_user_from_request(request):
+    access_token = request.headers.get('Authorization', '').split()
+    if len(access_token) == 2 and access_token[0] == 'Bearer':
+        access_token = access_token[1]
+        user = User.query.filter_by(access_token=access_token).first()
+        if user:
+            return user
+
+    return None
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.filter_by(username=user_id).first()
