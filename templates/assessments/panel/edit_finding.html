@@ -61,7 +61,7 @@
                     cvss.set($('#cvss_v3_vector').val());
 
                     $("#solution_select").change(function () {
-                        var val = $(this).val()
+                        var val = $(this).val();
                         selected_text = "";
                         if (val) {
                             selected_text = solutions[val];
@@ -72,7 +72,7 @@
                         solution_preview.html(markdown.toHTML(selected_text));
                     });
                     $('.btn#solution_apply').click(function (ev) {
-                        $('#solution').val(selected_text)
+                        $('#solution').val(selected_text);
                         ev.preventDefault();
                     });
 

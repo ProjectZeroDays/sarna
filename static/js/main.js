@@ -41,7 +41,7 @@ $(function () {
         let elem = $(this);
 
         if (!confirmed) {
-            e.preventDefault()
+            e.preventDefault();
             ask_confirmation().then(
                 function () {
                     confirmed = true;

@@ -1,8 +1,8 @@
-import itertools
 from os import path
 
 from flask import Flask, request
 from werkzeug.contrib.fixers import ProxyFix
+import itertools
 
 from sarna.config import DevelopmentConfig, ProductionConfig, BaseConfig
 
