@@ -50,6 +50,8 @@ assessment_audit = db.Table(
 
 
 class Assessment(Base, db.Model):
+    _exclude_attrs = ["client_id", "creator_id", "approvals"]
+
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(GUID, default=uuid4, unique=True, nullable=False)
     name = db.Column(db.String(64), nullable=False)
@@ -121,6 +123,21 @@ class Assessment(Base, db.Model):
 
     def evidence_path(self):
         return os.path.join(config.EVIDENCES_PATH, str(self.uuid))
+
+    def export_data(self, only_approved=True):
+        assessment_data = self.to_dict()
+
+        if only_approved:
+            finding_status_valid = {FindingStatus.Confirmed, FindingStatus.Reviewed}
+            assessment_data['findings'] = list(
+                filter(lambda f: f.status in finding_status_valid, self.findings)
+            )
+        else:
+            assessment_data['findings'] = list(self.findings)
+
+        assessment_data['actives'] = list(self.actives)
+
+        return assessment_data
 
 
 class Image(Base, db.Model):

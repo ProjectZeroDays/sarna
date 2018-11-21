@@ -52,6 +52,8 @@ app.register_blueprint(findings.blueprint, url_prefix='/findings')
 app.register_blueprint(users.blueprint, url_prefix='/users')
 app.register_blueprint(api.blueprint, url_prefix='/api/v1')
 
+api.init_app(app)
+
 app.register_error_handler(400, error_handler)
 app.register_error_handler(401, error_handler)
 app.register_error_handler(403, error_handler)

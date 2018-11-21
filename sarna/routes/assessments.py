@@ -1,7 +1,8 @@
+import json
 import os
 
 from PIL import Image as PillowImage
-from flask import Blueprint, render_template, request, flash, send_from_directory
+from flask import Blueprint, render_template, request, flash, send_from_directory, make_response
 from flask import abort
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
@@ -28,6 +29,27 @@ def index():
         assessments=assessments
     )
     return render_template('assessments/list.html', **context)
+
+
+@blueprint.route('/<assessment_id>/export', methods=('GET',))
+@auditor_required
+def export(assessment_id):
+    assessment: Assessment = Assessment.query.filter_by(id=assessment_id).one()
+    if not current_user.owns(assessment) and not current_user.manages(assessment.client):
+        abort(403)
+
+    response = make_response(
+        json.dumps(
+            assessment.export_data(only_approved=False),
+            indent=2,
+            sort_keys=True,
+            default=lambda x: x.to_dict()
+        )
+    )
+    response.headers.set('Content-Type', 'application/json')
+    response.headers.set(
+        'Content-Disposition', 'attachment', filename='%s.json' % assessment.name)
+    return response
 
 
 @blueprint.route('/<assessment_id>', methods=('GET', 'POST'))

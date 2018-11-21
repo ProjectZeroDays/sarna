@@ -94,12 +94,8 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
 
         def locale(choice):
             return locale_choice(choice, assessment.lang)
-        
-        finding_status_valid = {FindingStatus.Confirmed, FindingStatus.Reviewed}
-        assessment_data = assessment.to_dict()
-        assessment_data['findings'] = list(
-            filter(lambda f: f.status in finding_status_valid, assessment.findings)
-        )
+
+        assessment_data = assessment.export_data()
 
         # apply jinja template
         jinja2_env = jinja2.Environment()
