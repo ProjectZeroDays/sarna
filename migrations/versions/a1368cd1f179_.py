@@ -12,7 +12,7 @@ import sarna
 
 # revision identifiers, used by Alembic.
 revision = 'a1368cd1f179'
-down_revision = '357612dfa45b'
+down_revision = '46155f63422c'
 branch_labels = None
 depends_on = None
 

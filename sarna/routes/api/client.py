@@ -1,14 +1,16 @@
 from http import HTTPStatus
 
-from flask import Blueprint, request
-from flask_restful import Resource, Api, fields, marshal_with, abort
+from flask import request
+from flask_restful import Resource, fields, marshal_with, abort, Api
 
 from sarna.core.auth import current_user
-from sarna.core.security import csrf
 from sarna.model import User, Client
 
-blueprint = Blueprint('api', __name__)
-api = Api(blueprint, prefix='/clients', decorators=[csrf.exempt])
+
+def init_api(api: Api):
+    api.add_resource(ClientListApi, '/clients/')
+    api.add_resource(ClientApi, '/clients/<int:id>')
+
 
 client_fields = {
     'id': fields.Integer,
@@ -26,7 +28,6 @@ client_fields = {
 }
 
 
-@api.resource('/<int:id>')
 class ClientApi(Resource):
     @marshal_with(client_fields, envelope='data')
     def get(self, id):
@@ -58,7 +59,6 @@ class ClientApi(Resource):
         return '', 204
 
 
-@api.resource('/')
 class ClientListApi(Resource):
     @marshal_with(client_fields, envelope='data')
     def get(self):
