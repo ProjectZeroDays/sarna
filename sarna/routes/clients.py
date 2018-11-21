@@ -8,7 +8,7 @@ from sarna.auxiliary import redirect_back
 from sarna.core.auth import current_user
 from sarna.core.roles import valid_auditors, valid_managers, manager_required
 from sarna.forms.assessment import AssessmentForm
-from sarna.forms.client import ClientForm, TemplateCreateNewForm
+from sarna.forms.client import ClientForm, TemplateCreateNewForm, ClientChangeOwnerForm
 from sarna.model import Assessment, db
 from sarna.model.client import Client, Template
 from sarna.model.user import User
@@ -58,12 +58,29 @@ def new():
 @blueprint.route('/delete/<client_id>', methods=('POST',))
 @manager_required
 def delete(client_id: int):
-    client = Client.query.filter_by(id=client_id).one()
+    client_query = Client.query.filter_by(id=client_id)
+    client = client_query.one()
 
     if not current_user.owns(client):
         abort(403)
 
-    client.delete()
+    client_query.delete(synchronize_session=False)
+
+    return redirect_back('.index')
+
+
+@blueprint.route('/<client_id>/change_owner', methods=('POST',))
+def change_owner(client_id: int):
+    client: Client = Client.query.filter_by(id=client_id).one()
+
+    if not current_user.owns(client):
+        abort(403)
+
+    form = ClientChangeOwnerForm()
+    form.owner.choices = User.get_choices(User.user_type.in_(valid_managers))
+
+    if form.validate_on_submit():
+        client.creator = form.owner.data
 
     return redirect_back('.index')
 
@@ -84,8 +101,12 @@ def edit(client_id: int):
     form.managers.choices = User.get_choices(User.user_type.in_(valid_managers))
     form.auditors.choices = User.get_choices(User.user_type.in_(valid_auditors))
 
+    change_owner_form = ClientChangeOwnerForm(owner=client.creator)
+    change_owner_form.owner.choices = User.get_choices(User.user_type.in_(valid_managers))
+
     context = dict(
         form=form,
+        change_owner_form=change_owner_form,
         client=client
     )
     if form.validate_on_submit():
