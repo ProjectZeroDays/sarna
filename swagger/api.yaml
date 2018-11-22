@@ -1,0 +1,281 @@
+swagger: "2.0"
+info:
+  description: "API of SARNA (https://github.com/rsrdesarrollo/sarna/)"
+  version: "1.0.0"
+  title: "SARNA API"
+  contact:
+    email: "rsrdesarrollo@gmail.com"
+  license:
+    name: "GPLv3"
+    url: "https://www.gnu.org/licenses/gpl.txt"
+host: "example.com"
+basePath: "/api/v1"
+schemes:
+- "https"
+
+tags:
+- name: client
+  description: "Everything about your clients"
+- name: finding
+  description: "Access Finding database"
+- name: assessment
+  description: "Operate with assessments"
+
+consumes:
+- "application/json"
+produces:
+- "application/json"
+
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: "Api-Key"
+    in: header
+
+parameters:
+  page_size:
+    name: page_size
+    in: query
+    description: Number of items returned
+    type: integer
+    format: int32
+    minimum: 0
+    exclusiveMinimum: true
+    maximum: 100
+    exclusiveMaximum: false
+    multipleOf: 10
+  page:
+    name: page
+    in: query
+    description: Number of page
+    type: integer
+    format: int32
+    minimum: 0
+    exclusiveMinimum: false
+
+paths:
+  /client:
+    get:
+      tags:
+      - client
+      summary: "Get a list of clients"
+      responses:
+        200:
+          description: "List of clients"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Client"
+  /client/{client_id}:
+    get:
+      tags:
+      - client
+      summary: Get client data
+      parameters:
+      - name: client_id
+        in: path
+        description: Client ID
+        required: true
+        type: integer
+        format: int64
+      produces:
+      - "application/json"
+      responses:
+        404:
+          $ref: '#/responses/NotFound'
+        200:
+          description: "Client data"
+          schema:
+            $ref: '#/definitions/Client'
+
+responses:
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      $ref: '#/definitions/Error'
+  Unauthorized:
+    description: Unauthorized
+    schema:
+      $ref: '#/definitions/Error'
+definitions:
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    required:
+    - code
+    - message
+  ## ENUMS
+  ########
+  UserType:
+    type: string
+    example: "manager"
+    enum: [manager, auditor, trusted_auditor, admin]
+  AssessmentType:
+    type: string
+    example: "Web"
+    enum: [Web]
+  AssessmentStatus:
+    type: string
+    example: "Open"
+    enum: [Open]
+  FindingType:
+    type: string
+    example: "Web"
+    enum: [Web, Infra, Mobile, WiFi]
+  FindingStatus:
+    type: string
+    example: "Pending"
+    enum: [Pending]
+  Language:
+    type: string
+    example: Spanish
+    enum: [Spanish, English]
+  Score:
+    type: string
+    example: Low
+    enum: [Info, Low, Medium, High, Critical, NA]
+  OWASPMobileTop10Category:
+    type: string
+    example: "M1"
+    enum: [M1]
+  OWISAMCategory:
+    type: string
+    example: "DI-001"
+    enum: ["DI-001"]
+  OWASPCategory:
+    type: string
+    example: 'OTG-INFO-001'
+    enum: ['OTG-INFO-001']
+
+  ## FINDING TEMPLATES
+  ####################
+  FindingTemplate:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: "xss-vulne-stored"
+        maxLength: 64
+      type:
+        $ref: '#/definitions/FindingType'
+      owasp_category:
+        $ref: '#/definitions/OWASPCategory'
+      owasp_mobile_category:
+        $ref: '#/definitions/OWASPMobileTop10Category'
+      owisam_category:
+        $ref: '#/definitions/OWISAMCategory'
+      tech_risk:
+        $ref: '#/definitions/Score'
+      business_risk:
+        $ref: '#/definitions/Score'
+      exploitability:
+        $ref: '#/definitions/Score'
+      dissemination:
+        $ref: '#/definitions/Score'
+      solution_complexity:
+        $ref: '#/definitions/Score'
+      creator:
+        $ref: '#/definitions/User'
+  Finding:
+    type: object
+  Active:
+    type: object
+  Images:
+    type: object
+
+
+  ## CLIENTS
+  ##########
+  Client:
+    type: object
+    properties:
+      short_name:
+        type: string
+        example: "ACME"
+        maxLength: 64
+      long_name:
+        type: string
+        example: "ACME Global Corp Inc."
+        maxLength: 128
+      assessments:
+        type: array
+        items:
+          $ref: '#/definitions/Assessment'
+      templates:
+        type: array
+        items:
+          $ref: '#/definitions/Template'
+      creator:
+        $ref: '#/definitions/User'
+      managers:
+        type: array
+        items:
+          $ref: '#/definitions/User'
+  Template:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "MY TEMPLATE"
+        maxLength: 25
+      description:
+        type: string
+        example: "This is the template description"
+        maxLength: 128
+
+  ## ASSESSMENT
+  #############
+  Assessment:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: "assessment-1"
+        maxLength: 64
+      platform:
+        type: string
+        example: "example.com"
+        maxLength: 64
+      lang:
+        $ref: '#/definitions/Language'
+      type:
+        $ref: '#/definitions/AssessmentType'
+      status:
+        $ref: '#/definitions/AssessmentStatus'
+      client:
+        $ref: '#/definitions/Client'
+      creator:
+        $ref: '#/definitions/User'
+      auditors:
+        type: array
+        items:
+          $ref: '#/definitions/User'
+      findings:
+        type: array
+        items:
+          $ref: '#/definitions/Finding'
+      creation_date:
+        type: string
+        format: date-time
+
+  ## USERS
+  ########
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+        example: "username"
+        maxLength: 128
+      user_type:
+        $ref: '#/definitions/UserType'
