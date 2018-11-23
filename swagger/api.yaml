@@ -205,6 +205,12 @@ paths:
       summary: "Get a list of findings in assessment"
       operationId: getAssessmentFindingis
       parameters:
+      - name: assessment_id
+        in: path
+        description: Assessment ID
+        required: true
+        type: integer
+        format: int64
       - in: query
         $ref: '#/parameters/page'
       - in: query
@@ -308,6 +314,8 @@ definitions:
         example: 0
       data:
         type: array
+        items:
+          type: object
       error:
         $ref: '#/definitions/Error'
   Error:

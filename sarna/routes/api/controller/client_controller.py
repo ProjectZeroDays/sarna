@@ -1,8 +1,9 @@
-import connexion
-import six
-
+from sarna.core.auth import current_user
+from sarna.model import Client as ClientORM
+from sarna.model import User as UserORM
+from sarna.routes.api.models import PaginatedEnvelop
+from sarna.routes.api.models.client import Client
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
-from sarna.routes.api import util
 
 
 def get_client(client_id):  # noqa: E501
@@ -15,7 +16,11 @@ def get_client(client_id):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    clientOrm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
+    client: Client = Client(**clientOrm.to_dict())
+    data = Envelop(data=client)
+
+    return data
 
 
 def get_client_assessments(client_id, page=None, page_size=None):  # noqa: E501
@@ -64,7 +69,24 @@ def get_clients(page=None, page_size=None):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    clients_query = ClientORM.query.filter(
+        (ClientORM.creator == current_user) |
+        (ClientORM.managers.any(UserORM.id == current_user.id)) |
+        (ClientORM.auditors.any(UserORM.id == current_user.id))
+    )
+    total_count = clients_query.count()
+    clientsOrm = clients_query.limit(page_size).skip(page*page_size)
+
+    data = PaginatedEnvelop(
+        total=total_count,
+        page_size=page_size,
+        page=page,
+        data=[
+            Client(**c.to_dict()) for c in clientsOrm
+        ]
+    )
+
+    return data
 
 
 def get_users(page=None, page_size=None):  # noqa: E501

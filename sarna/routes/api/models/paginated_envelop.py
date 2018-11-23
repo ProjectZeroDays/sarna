@@ -16,7 +16,7 @@ class PaginatedEnvelop(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, total: int=None, page_size: int=None, page: int=None, data: List[ERRORUNKNOWN]=None, error: Error=None):  # noqa: E501
+    def __init__(self, total: int=None, page_size: int=None, page: int=None, data: List[object]=None, error: Error=None):  # noqa: E501
         """PaginatedEnvelop - a model defined in Swagger
 
         :param total: The total of this PaginatedEnvelop.  # noqa: E501
@@ -34,7 +34,7 @@ class PaginatedEnvelop(Model):
             'total': int,
             'page_size': int,
             'page': int,
-            'data': List[ERRORUNKNOWN],
+            'data': List[object],
             'error': Error
         }
 
@@ -133,7 +133,7 @@ class PaginatedEnvelop(Model):
         self._page = page
 
     @property
-    def data(self) -> List[ERRORUNKNOWN]:
+    def data(self) -> List[object]:
         """Gets the data of this PaginatedEnvelop.
 
 
@@ -143,7 +143,7 @@ class PaginatedEnvelop(Model):
         return self._data
 
     @data.setter
-    def data(self, data: List[ERRORUNKNOWN]):
+    def data(self, data: List[object]):
         """Sets the data of this PaginatedEnvelop.
 
 
