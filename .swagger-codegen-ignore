@@ -1,0 +1,19 @@
+# Created by .ignore support plugin (hsz.mobi)
+Dockerfile
+.dockerignore
+.gitignore
+git_push.sh
+README.md
+requirements.txt
+setup.py
+.swagger-codegen
+.swagger-codegen-ignore
+test-requirements.txt
+tox.ini
+.travis.yml
+sarna.routes.api/__main__.py
+sarna.routes.api/test
+sarna.routes.api/test/*
+sarna.routes.api/__init__.py
+
+

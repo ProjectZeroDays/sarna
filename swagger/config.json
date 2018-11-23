@@ -1,0 +1,4 @@
+{
+	"packageName": "sarna.routes.api",
+	"controllerPackage": "controller"
+}

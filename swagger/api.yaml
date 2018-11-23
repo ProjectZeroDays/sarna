@@ -44,6 +44,7 @@ parameters:
     maximum: 100
     exclusiveMaximum: false
     multipleOf: 10
+    default: 10
   page:
     name: page
     in: query
@@ -52,6 +53,7 @@ parameters:
     format: int32
     minimum: 0
     exclusiveMinimum: false
+    default: 0
 
 paths:
   /client:
@@ -59,18 +61,29 @@ paths:
       tags:
       - client
       summary: "Get a list of clients"
+      operationId: getClients
+      parameters:
+      - in: query
+        $ref: '#/parameters/page'
+      - in: query
+        $ref: '#/parameters/page_size'
       responses:
         200:
           description: "List of clients"
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Client"
+            allOf:
+            - $ref: '#/definitions/PaginatedEnvelop'
+            - type: object
+              properties:
+                data:
+                  items:
+                    $ref: '#/definitions/Client'
   /client/{client_id}:
     get:
       tags:
       - client
       summary: Get client data
+      operationId: getClient
       parameters:
       - name: client_id
         in: path
@@ -78,26 +91,225 @@ paths:
         required: true
         type: integer
         format: int64
-      produces:
-      - "application/json"
       responses:
         404:
           $ref: '#/responses/NotFound'
+        403:
+          $ref: '#/responses/Forbidden'
         200:
           description: "Client data"
           schema:
-            $ref: '#/definitions/Client'
+            allOf:
+            - $ref: '#/definitions/Envelop'
+            - type: object
+              property:
+                data:
+                  $ref: '#/definitions/Client'
+  /client/{client_id}/assessment:
+    get:
+      tags:
+        - client
+      summary: Get list of assessment of the client
+      operationId: getClientAssessments
+      parameters:
+      - in: path
+        name: client_id
+        description: Client ID
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        $ref: '#/parameters/page'
+      - in: query
+        $ref: '#/parameters/page_size'
+      responses:
+        404:
+          $ref: '#/responses/NotFound'
+        403:
+          $ref: '#/responses/Forbidden'
+        200:
+          description: "Client Assessments data"
+          schema:
+            allOf:
+            - $ref: '#/definitions/PaginatedEnvelop'
+            - type: object
+              properties:
+                data:
+                  items:
+                    $ref: '#/definitions/Assessment'
+  /client/{client_id}/template:
+    get:
+      tags:
+        - client
+      summary: Get list of assessment of the client
+      operationId: getClientTemplates
+      parameters:
+      - in: path
+        name: client_id
+        description: Client ID
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        $ref: '#/parameters/page'
+      - in: query
+        $ref: '#/parameters/page_size'
+      responses:
+        404:
+          $ref: '#/responses/NotFound'
+        403:
+          $ref: '#/responses/Forbidden'
+        200:
+          description: "Client Assessments data"
+          schema:
+            allOf:
+            - $ref: '#/definitions/PaginatedEnvelop'
+            - type: object
+              properties:
+                data:
+                  items:
+                    $ref: '#/definitions/Template'
+  /client/{client_id}/template/{template_id}:
 
+  /assessment/{assessment_id}:
+    get:
+      tags:
+      - assessment
+      summary: Get assessment data
+      operationId: getAssessment
+      parameters:
+      - name: assessment_id
+        in: path
+        description: Assessment ID
+        required: true
+        type: integer
+        format: int64
+      responses:
+        404:
+          $ref: '#/responses/NotFound'
+        403:
+          $ref: '#/responses/Forbidden'
+        200:
+          description: "Assessment data"
+          schema:
+            allOf:
+            - $ref: '#/definitions/Envelop'
+            - type: object
+              property:
+                data:
+                  $ref: '#/definitions/Assessment'
+  /assessment/{assessment_id}/findig:
+    get:
+      tags:
+      - assessment
+      summary: "Get a list of findings in assessment"
+      operationId: getAssessmentFindingis
+      parameters:
+      - in: query
+        $ref: '#/parameters/page'
+      - in: query
+        $ref: '#/parameters/page_size'
+      responses:
+        200:
+          description: "List of Findings"
+          schema:
+            allOf:
+            - $ref: '#/definitions/PaginatedEnvelop'
+            - type: object
+              properties:
+                data:
+                  items:
+                    $ref: '#/definitions/Finding'
+  /assessment/{assessment_id}/findig/{finding_id}:
+  /assessment/{assessment_id}/image:
+  /assessment/{assessment_id}/image/{image_id}:
+  /assessment/{assessment_id}/asset:
+  /assessment/{assessment_id}/asset/{asset_id}:
+  /assessment/{assessment_id}/asset/{asset_id}/resource:
+  /findign:
+    get:
+      tags:
+      - finding
+      summary: "Get a list of finding templates"
+      operationId: getFindignTemplates
+      parameters:
+      - in: query
+        $ref: '#/parameters/page'
+      - in: query
+        $ref: '#/parameters/page_size'
+      responses:
+        200:
+          description: "List of Finding Templates"
+          schema:
+            allOf:
+            - $ref: '#/definitions/PaginatedEnvelop'
+            - type: object
+              properties:
+                data:
+                  items:
+                    $ref: '#/definitions/FindingTemplate'
+  /finding/{finding_id}:
+  /finding/{finding_id}/solution:
+  /finding/{finding_id}/translation:
+  /user:
+    get:
+      tags:
+      - client
+      summary: "Get a list of Users"
+      operationId: getUsers
+      parameters:
+      - in: query
+        $ref: '#/parameters/page'
+      - in: query
+        $ref: '#/parameters/page_size'
+      responses:
+        200:
+          description: "List of Users"
+          schema:
+            allOf:
+            - $ref: '#/definitions/PaginatedEnvelop'
+            - type: object
+              properties:
+                data:
+                  items:
+                    $ref: '#/definitions/User'
+  /user/{user_id}:
 responses:
   NotFound:
     description: The specified resource was not found
     schema:
-      $ref: '#/definitions/Error'
-  Unauthorized:
-    description: Unauthorized
+      $ref: '#/definitions/Envelop'
+  Forbidden:
+    description: Forbidden
     schema:
-      $ref: '#/definitions/Error'
+      $ref: '#/definitions/Envelop'
 definitions:
+  Envelop:
+    type: object
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/Error'
+  PaginatedEnvelop:
+    type: object
+    properties:
+      total:
+        type: integer
+        description: "Number of items"
+        example: 3212
+      page_size:
+        type: integer
+        description: "number of items per page"
+        example: 10
+      page:
+        type: integer
+        description: "Current page number"
+        example: 0
+      data:
+        type: array
+      error:
+        $ref: '#/definitions/Error'
   Error:
     type: object
     properties:
@@ -204,20 +416,12 @@ definitions:
         type: string
         example: "ACME Global Corp Inc."
         maxLength: 128
-      assessments:
-        type: array
-        items:
-          $ref: '#/definitions/Assessment'
-      templates:
-        type: array
-        items:
-          $ref: '#/definitions/Template'
       creator:
-        $ref: '#/definitions/User'
+        $ref: '#/definitions/UserName'
       managers:
         type: array
         items:
-          $ref: '#/definitions/User'
+          $ref: '#/definitions/UserName'
   Template:
     type: object
     properties:
@@ -232,6 +436,7 @@ definitions:
 
   ## ASSESSMENT
   #############
+
   Assessment:
     type: object
     properties:
@@ -255,27 +460,25 @@ definitions:
       client:
         $ref: '#/definitions/Client'
       creator:
-        $ref: '#/definitions/User'
+        $ref: '#/definitions/UserName'
       auditors:
         type: array
         items:
-          $ref: '#/definitions/User'
-      findings:
-        type: array
-        items:
-          $ref: '#/definitions/Finding'
+          $ref: '#/definitions/UserName'
       creation_date:
         type: string
         format: date-time
 
   ## USERS
   ########
+  UserName:
+    type: string
+    example: "username"
+    maxLength: 128
   User:
     type: object
     properties:
       username:
-        type: string
-        example: "username"
-        maxLength: 128
+        $ref: '#/definitions/UserName'
       user_type:
         $ref: '#/definitions/UserType'

@@ -1,0 +1,540 @@
+---
+swagger: "2.0"
+info:
+  description: "API of SARNA (https://github.com/rsrdesarrollo/sarna/)"
+  version: "1.0.0"
+  title: "SARNA API"
+  contact:
+    email: "rsrdesarrollo@gmail.com"
+  license:
+    name: "GPLv3"
+    url: "https://www.gnu.org/licenses/gpl.txt"
+host: "example.com"
+basePath: "/api/v1"
+tags:
+- name: "client"
+  description: "Everything about your clients"
+- name: "finding"
+  description: "Access Finding database"
+- name: "assessment"
+  description: "Operate with assessments"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /client:
+    get:
+      tags:
+      - "client"
+      summary: "Get a list of clients"
+      operationId: "get_clients"
+      parameters:
+      - name: "page"
+        in: "query"
+        description: "Number of page"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        exclusiveMinimum: false
+        format: "int32"
+      - name: "page_size"
+        in: "query"
+        description: "Number of items returned"
+        required: false
+        type: "integer"
+        default: 10
+        maximum: 100
+        exclusiveMaximum: false
+        minimum: 0
+        exclusiveMinimum: true
+        multipleOf: 10.0
+        format: "int32"
+      responses:
+        200:
+          description: "List of clients"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+  /client/{client_id}:
+    get:
+      tags:
+      - "client"
+      summary: "Get client data"
+      operationId: "get_client"
+      parameters:
+      - name: "client_id"
+        in: "path"
+        description: "Client ID"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Client data"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Envelop"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/Envelop"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+  /client/{client_id}/assessment:
+    get:
+      tags:
+      - "client"
+      summary: "Get list of assessment of the client"
+      operationId: "get_client_assessments"
+      parameters:
+      - name: "client_id"
+        in: "path"
+        description: "Client ID"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "page"
+        in: "query"
+        description: "Number of page"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        exclusiveMinimum: false
+        format: "int32"
+      - name: "page_size"
+        in: "query"
+        description: "Number of items returned"
+        required: false
+        type: "integer"
+        default: 10
+        maximum: 100
+        exclusiveMaximum: false
+        minimum: 0
+        exclusiveMinimum: true
+        multipleOf: 10.0
+        format: "int32"
+      responses:
+        200:
+          description: "Client Assessments data"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Envelop"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/Envelop"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+  /client/{client_id}/template:
+    get:
+      tags:
+      - "client"
+      summary: "Get list of assessment of the client"
+      operationId: "get_client_templates"
+      parameters:
+      - name: "client_id"
+        in: "path"
+        description: "Client ID"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "page"
+        in: "query"
+        description: "Number of page"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        exclusiveMinimum: false
+        format: "int32"
+      - name: "page_size"
+        in: "query"
+        description: "Number of items returned"
+        required: false
+        type: "integer"
+        default: 10
+        maximum: 100
+        exclusiveMaximum: false
+        minimum: 0
+        exclusiveMinimum: true
+        multipleOf: 10.0
+        format: "int32"
+      responses:
+        200:
+          description: "Client Assessments data"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Envelop"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/Envelop"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+  /assessment/{assessment_id}:
+    get:
+      tags:
+      - "assessment"
+      summary: "Get assessment data"
+      operationId: "get_assessment"
+      parameters:
+      - name: "assessment_id"
+        in: "path"
+        description: "Assessment ID"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Assessment data"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Envelop"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/Envelop"
+      x-swagger-router-controller: "sarna.routes.api.controller.assessment_controller"
+  /assessment/{assessment_id}/findig:
+    get:
+      tags:
+      - "assessment"
+      summary: "Get a list of findings in assessment"
+      operationId: "get_assessment_findingis"
+      parameters:
+      - name: "page"
+        in: "query"
+        description: "Number of page"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        exclusiveMinimum: false
+        format: "int32"
+      - name: "page_size"
+        in: "query"
+        description: "Number of items returned"
+        required: false
+        type: "integer"
+        default: 10
+        maximum: 100
+        exclusiveMaximum: false
+        minimum: 0
+        exclusiveMinimum: true
+        multipleOf: 10.0
+        format: "int32"
+      responses:
+        200:
+          description: "List of Findings"
+      x-swagger-router-controller: "sarna.routes.api.controller.assessment_controller"
+  /findign:
+    get:
+      tags:
+      - "finding"
+      summary: "Get a list of finding templates"
+      operationId: "get_findign_templates"
+      parameters:
+      - name: "page"
+        in: "query"
+        description: "Number of page"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        exclusiveMinimum: false
+        format: "int32"
+      - name: "page_size"
+        in: "query"
+        description: "Number of items returned"
+        required: false
+        type: "integer"
+        default: 10
+        maximum: 100
+        exclusiveMaximum: false
+        minimum: 0
+        exclusiveMinimum: true
+        multipleOf: 10.0
+        format: "int32"
+      responses:
+        200:
+          description: "List of Finding Templates"
+      x-swagger-router-controller: "sarna.routes.api.controller.finding_controller"
+  /user:
+    get:
+      tags:
+      - "client"
+      summary: "Get a list of Users"
+      operationId: "get_users"
+      parameters:
+      - name: "page"
+        in: "query"
+        description: "Number of page"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        exclusiveMinimum: false
+        format: "int32"
+      - name: "page_size"
+        in: "query"
+        description: "Number of items returned"
+        required: false
+        type: "integer"
+        default: 10
+        maximum: 100
+        exclusiveMaximum: false
+        minimum: 0
+        exclusiveMinimum: true
+        multipleOf: 10.0
+        format: "int32"
+      responses:
+        200:
+          description: "List of Users"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "Api-Key"
+    in: "header"
+definitions:
+  Envelop:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties: {}
+      error:
+        $ref: "#/definitions/Error"
+  PaginatedEnvelop:
+    type: "object"
+    properties:
+      total:
+        type: "integer"
+        example: 3212
+        description: "Number of items"
+      page_size:
+        type: "integer"
+        example: 10
+        description: "number of items per page"
+      page:
+        type: "integer"
+        example: 0
+        description: "Current page number"
+      data:
+        type: "array"
+      error:
+        $ref: "#/definitions/Error"
+  Error:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "string"
+      message:
+        type: "string"
+  UserType:
+    type: "string"
+    example: "manager"
+    enum:
+    - "manager"
+    - "auditor"
+    - "trusted_auditor"
+    - "admin"
+  AssessmentType:
+    type: "string"
+    example: "Web"
+    enum:
+    - "Web"
+  AssessmentStatus:
+    type: "string"
+    example: "Open"
+    enum:
+    - "Open"
+  FindingType:
+    type: "string"
+    example: "Web"
+    enum:
+    - "Web"
+    - "Infra"
+    - "Mobile"
+    - "WiFi"
+  FindingStatus:
+    type: "string"
+    example: "Pending"
+    enum:
+    - "Pending"
+  Language:
+    type: "string"
+    example: "Spanish"
+    enum:
+    - "Spanish"
+    - "English"
+  Score:
+    type: "string"
+    example: "Low"
+    enum:
+    - "Info"
+    - "Low"
+    - "Medium"
+    - "High"
+    - "Critical"
+    - "NA"
+  OWASPMobileTop10Category:
+    type: "string"
+    example: "M1"
+    enum:
+    - "M1"
+  OWISAMCategory:
+    type: "string"
+    example: "DI-001"
+    enum:
+    - "DI-001"
+  OWASPCategory:
+    type: "string"
+    example: "OTG-INFO-001"
+    enum:
+    - "OTG-INFO-001"
+  FindingTemplate:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        example: 1
+      name:
+        type: "string"
+        example: "xss-vulne-stored"
+        maxLength: 64
+      type:
+        $ref: "#/definitions/FindingType"
+      owasp_category:
+        $ref: "#/definitions/OWASPCategory"
+      owasp_mobile_category:
+        $ref: "#/definitions/OWASPMobileTop10Category"
+      owisam_category:
+        $ref: "#/definitions/OWISAMCategory"
+      tech_risk:
+        $ref: "#/definitions/Score"
+      business_risk:
+        $ref: "#/definitions/Score"
+      exploitability:
+        $ref: "#/definitions/Score"
+      dissemination:
+        $ref: "#/definitions/Score"
+      solution_complexity:
+        $ref: "#/definitions/Score"
+      creator:
+        $ref: "#/definitions/User"
+  Finding:
+    type: "object"
+  Active:
+    type: "object"
+  Images:
+    type: "object"
+  Client:
+    type: "object"
+    properties:
+      short_name:
+        type: "string"
+        example: "ACME"
+        maxLength: 64
+      long_name:
+        type: "string"
+        example: "ACME Global Corp Inc."
+        maxLength: 128
+      creator:
+        $ref: "#/definitions/UserName"
+      managers:
+        type: "array"
+        items:
+          $ref: "#/definitions/UserName"
+  Template:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "MY TEMPLATE"
+        maxLength: 25
+      description:
+        type: "string"
+        example: "This is the template description"
+        maxLength: 128
+  Assessment:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        example: 1
+      name:
+        type: "string"
+        example: "assessment-1"
+        maxLength: 64
+      platform:
+        type: "string"
+        example: "example.com"
+        maxLength: 64
+      lang:
+        $ref: "#/definitions/Language"
+      type:
+        $ref: "#/definitions/AssessmentType"
+      status:
+        $ref: "#/definitions/AssessmentStatus"
+      client:
+        $ref: "#/definitions/Client"
+      creator:
+        $ref: "#/definitions/UserName"
+      auditors:
+        type: "array"
+        items:
+          $ref: "#/definitions/UserName"
+      creation_date:
+        type: "string"
+        format: "date-time"
+  UserName:
+    type: "string"
+    example: "username"
+  User:
+    type: "object"
+    properties:
+      username:
+        $ref: "#/definitions/UserName"
+      user_type:
+        $ref: "#/definitions/UserType"
+parameters:
+  page_size:
+    name: "page_size"
+    in: "query"
+    description: "Number of items returned"
+    required: false
+    type: "integer"
+    default: 10
+    maximum: 100
+    exclusiveMaximum: false
+    minimum: 0
+    exclusiveMinimum: true
+    multipleOf: 10.0
+    format: "int32"
+  page:
+    name: "page"
+    in: "query"
+    description: "Number of page"
+    required: false
+    type: "integer"
+    default: 0
+    minimum: 0
+    exclusiveMinimum: false
+    format: "int32"
+responses:
+  Forbidden:
+    description: "Forbidden"
+    schema:
+      $ref: "#/definitions/Envelop"
+  NotFound:
+    description: "The specified resource was not found"
+    schema:
+      $ref: "#/definitions/Envelop"

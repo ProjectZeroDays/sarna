@@ -1,11 +1,9 @@
-from flask import Blueprint
-from flask_restful import Api
+import connexion
 
-from sarna.core.security import csrf
-from sarna.routes.api import client, assessment
+from sarna.routes.api import encoder
 
-blueprint = Blueprint('api', __name__)
-api = Api(blueprint, decorators=[csrf.exempt])
+_app = connexion.App(__name__, specification_dir='./swagger/')
+_app.app.json_encoder = encoder.JSONEncoder
+_api = _app.add_api('swagger.yaml', arguments={'title': 'SARNA API'})
 
-client.init_api(api)
-assessment.init_api(api)
+blueprint = _app.blueprint
