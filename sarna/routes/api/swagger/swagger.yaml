@@ -330,13 +330,13 @@ definitions:
         type: "integer"
         example: 0
         description: "Current page number"
+      error:
+        $ref: "#/definitions/Error"
       data:
         type: "array"
         items:
           type: "object"
           properties: {}
-      error:
-        $ref: "#/definitions/Error"
   Error:
     type: "object"
     required:
@@ -457,11 +457,11 @@ definitions:
         example: "ACME Global Corp Inc."
         maxLength: 128
       creator:
-        $ref: "#/definitions/UserName"
+        $ref: "#/definitions/User"
       managers:
         type: "array"
         items:
-          $ref: "#/definitions/UserName"
+          $ref: "#/definitions/User"
   Template:
     type: "object"
     properties:
@@ -496,11 +496,11 @@ definitions:
       client:
         $ref: "#/definitions/Client"
       creator:
-        $ref: "#/definitions/UserName"
+        $ref: "#/definitions/User"
       auditors:
         type: "array"
         items:
-          $ref: "#/definitions/UserName"
+          $ref: "#/definitions/User"
       creation_date:
         type: "string"
         format: "date-time"

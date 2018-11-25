@@ -6,7 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from sarna.routes.api.models.base_model_ import Model
-from sarna.routes.api.models.user_name import UserName  # noqa: F401,E501
+from sarna.routes.api.models.user import User  # noqa: F401,E501
 from sarna.routes.api import util
 
 
@@ -16,7 +16,7 @@ class Client(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, short_name: str=None, long_name: str=None, creator: UserName=None, managers: List[UserName]=None):  # noqa: E501
+    def __init__(self, short_name: str=None, long_name: str=None, creator: User=None, managers: List[User]=None):  # noqa: E501
         """Client - a model defined in Swagger
 
         :param short_name: The short_name of this Client.  # noqa: E501
@@ -24,15 +24,15 @@ class Client(Model):
         :param long_name: The long_name of this Client.  # noqa: E501
         :type long_name: str
         :param creator: The creator of this Client.  # noqa: E501
-        :type creator: UserName
+        :type creator: User
         :param managers: The managers of this Client.  # noqa: E501
-        :type managers: List[UserName]
+        :type managers: List[User]
         """
         self.swagger_types = {
             'short_name': str,
             'long_name': str,
-            'creator': UserName,
-            'managers': List[UserName]
+            'creator': User,
+            'managers': List[User]
         }
 
         self.attribute_map = {
@@ -105,43 +105,43 @@ class Client(Model):
         self._long_name = long_name
 
     @property
-    def creator(self) -> UserName:
+    def creator(self) -> User:
         """Gets the creator of this Client.
 
 
         :return: The creator of this Client.
-        :rtype: UserName
+        :rtype: User
         """
         return self._creator
 
     @creator.setter
-    def creator(self, creator: UserName):
+    def creator(self, creator: User):
         """Sets the creator of this Client.
 
 
         :param creator: The creator of this Client.
-        :type creator: UserName
+        :type creator: User
         """
 
         self._creator = creator
 
     @property
-    def managers(self) -> List[UserName]:
+    def managers(self) -> List[User]:
         """Gets the managers of this Client.
 
 
         :return: The managers of this Client.
-        :rtype: List[UserName]
+        :rtype: List[User]
         """
         return self._managers
 
     @managers.setter
-    def managers(self, managers: List[UserName]):
+    def managers(self, managers: List[User]):
         """Sets the managers of this Client.
 
 
         :param managers: The managers of this Client.
-        :type managers: List[UserName]
+        :type managers: List[User]
         """
 
         self._managers = managers

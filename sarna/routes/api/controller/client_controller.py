@@ -1,7 +1,6 @@
 from sarna.core.auth import current_user
 from sarna.model import Client as ClientORM
 from sarna.model import User as UserORM
-from sarna.routes.api import util
 from sarna.routes.api.models import PaginatedEnvelop
 from sarna.routes.api.models.client import Client
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
@@ -18,10 +17,10 @@ def get_client(client_id):  # noqa: E501
     :rtype: None
     """
     clientOrm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
-    client: Client = Client(**clientOrm.to_dict())
+    client: Client = Client.from_dict(clientOrm)
     data = Envelop(data=client)
 
-    return data
+    return data.to_dict()
 
 
 def get_client_assessments(client_id, page=None, page_size=None):  # noqa: E501

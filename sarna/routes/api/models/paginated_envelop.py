@@ -16,7 +16,7 @@ class PaginatedEnvelop(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, total: int=None, page_size: int=None, page: int=None, data: List[object]=None, error: Error=None):  # noqa: E501
+    def __init__(self, total: int=None, page_size: int=None, page: int=None, error: Error=None, data: List[object]=None):  # noqa: E501
         """PaginatedEnvelop - a model defined in Swagger
 
         :param total: The total of this PaginatedEnvelop.  # noqa: E501
@@ -25,32 +25,32 @@ class PaginatedEnvelop(Model):
         :type page_size: int
         :param page: The page of this PaginatedEnvelop.  # noqa: E501
         :type page: int
-        :param data: The data of this PaginatedEnvelop.  # noqa: E501
-        :type data: List[object]
         :param error: The error of this PaginatedEnvelop.  # noqa: E501
         :type error: Error
+        :param data: The data of this PaginatedEnvelop.  # noqa: E501
+        :type data: List[object]
         """
         self.swagger_types = {
             'total': int,
             'page_size': int,
             'page': int,
-            'data': List[object],
-            'error': Error
+            'error': Error,
+            'data': List[object]
         }
 
         self.attribute_map = {
             'total': 'total',
             'page_size': 'page_size',
             'page': 'page',
-            'data': 'data',
-            'error': 'error'
+            'error': 'error',
+            'data': 'data'
         }
 
         self._total = total
         self._page_size = page_size
         self._page = page
-        self._data = data
         self._error = error
+        self._data = data
 
     @classmethod
     def from_dict(cls, dikt) -> 'PaginatedEnvelop':
@@ -133,27 +133,6 @@ class PaginatedEnvelop(Model):
         self._page = page
 
     @property
-    def data(self) -> List[object]:
-        """Gets the data of this PaginatedEnvelop.
-
-
-        :return: The data of this PaginatedEnvelop.
-        :rtype: List[object]
-        """
-        return self._data
-
-    @data.setter
-    def data(self, data: List[object]):
-        """Sets the data of this PaginatedEnvelop.
-
-
-        :param data: The data of this PaginatedEnvelop.
-        :type data: List[object]
-        """
-
-        self._data = data
-
-    @property
     def error(self) -> Error:
         """Gets the error of this PaginatedEnvelop.
 
@@ -173,3 +152,24 @@ class PaginatedEnvelop(Model):
         """
 
         self._error = error
+
+    @property
+    def data(self) -> List[object]:
+        """Gets the data of this PaginatedEnvelop.
+
+
+        :return: The data of this PaginatedEnvelop.
+        :rtype: List[object]
+        """
+        return self._data
+
+    @data.setter
+    def data(self, data: List[object]):
+        """Sets the data of this PaginatedEnvelop.
+
+
+        :param data: The data of this PaginatedEnvelop.
+        :type data: List[object]
+        """
+
+        self._data = data

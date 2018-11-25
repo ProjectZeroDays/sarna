@@ -10,7 +10,7 @@ from sarna.routes.api.models.assessment_status import AssessmentStatus  # noqa: 
 from sarna.routes.api.models.assessment_type import AssessmentType  # noqa: F401,E501
 from sarna.routes.api.models.client import Client  # noqa: F401,E501
 from sarna.routes.api.models.language import Language  # noqa: F401,E501
-from sarna.routes.api.models.user_name import UserName  # noqa: F401,E501
+from sarna.routes.api.models.user import User  # noqa: F401,E501
 from sarna.routes.api import util
 
 
@@ -20,7 +20,7 @@ class Assessment(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id: int=None, name: str=None, platform: str=None, lang: Language=None, type: AssessmentType=None, status: AssessmentStatus=None, client: Client=None, creator: UserName=None, auditors: List[UserName]=None, creation_date: datetime=None):  # noqa: E501
+    def __init__(self, id: int=None, name: str=None, platform: str=None, lang: Language=None, type: AssessmentType=None, status: AssessmentStatus=None, client: Client=None, creator: User=None, auditors: List[User]=None, creation_date: datetime=None):  # noqa: E501
         """Assessment - a model defined in Swagger
 
         :param id: The id of this Assessment.  # noqa: E501
@@ -38,9 +38,9 @@ class Assessment(Model):
         :param client: The client of this Assessment.  # noqa: E501
         :type client: Client
         :param creator: The creator of this Assessment.  # noqa: E501
-        :type creator: UserName
+        :type creator: User
         :param auditors: The auditors of this Assessment.  # noqa: E501
-        :type auditors: List[UserName]
+        :type auditors: List[User]
         :param creation_date: The creation_date of this Assessment.  # noqa: E501
         :type creation_date: datetime
         """
@@ -52,8 +52,8 @@ class Assessment(Model):
             'type': AssessmentType,
             'status': AssessmentStatus,
             'client': Client,
-            'creator': UserName,
-            'auditors': List[UserName],
+            'creator': User,
+            'auditors': List[User],
             'creation_date': datetime
         }
 
@@ -244,43 +244,43 @@ class Assessment(Model):
         self._client = client
 
     @property
-    def creator(self) -> UserName:
+    def creator(self) -> User:
         """Gets the creator of this Assessment.
 
 
         :return: The creator of this Assessment.
-        :rtype: UserName
+        :rtype: User
         """
         return self._creator
 
     @creator.setter
-    def creator(self, creator: UserName):
+    def creator(self, creator: User):
         """Sets the creator of this Assessment.
 
 
         :param creator: The creator of this Assessment.
-        :type creator: UserName
+        :type creator: User
         """
 
         self._creator = creator
 
     @property
-    def auditors(self) -> List[UserName]:
+    def auditors(self) -> List[User]:
         """Gets the auditors of this Assessment.
 
 
         :return: The auditors of this Assessment.
-        :rtype: List[UserName]
+        :rtype: List[User]
         """
         return self._auditors
 
     @auditors.setter
-    def auditors(self, auditors: List[UserName]):
+    def auditors(self, auditors: List[User]):
         """Sets the auditors of this Assessment.
 
 
         :param auditors: The auditors of this Assessment.
-        :type auditors: List[UserName]
+        :type auditors: List[User]
         """
 
         self._auditors = auditors
