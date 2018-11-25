@@ -26,7 +26,7 @@ class PaginatedEnvelop(Model):
         :param page: The page of this PaginatedEnvelop.  # noqa: E501
         :type page: int
         :param data: The data of this PaginatedEnvelop.  # noqa: E501
-        :type data: List[ERRORUNKNOWN]
+        :type data: List[object]
         :param error: The error of this PaginatedEnvelop.  # noqa: E501
         :type error: Error
         """
@@ -138,7 +138,7 @@ class PaginatedEnvelop(Model):
 
 
         :return: The data of this PaginatedEnvelop.
-        :rtype: List[ERRORUNKNOWN]
+        :rtype: List[object]
         """
         return self._data
 
@@ -148,7 +148,7 @@ class PaginatedEnvelop(Model):
 
 
         :param data: The data of this PaginatedEnvelop.
-        :type data: List[ERRORUNKNOWN]
+        :type data: List[object]
         """
 
         self._data = data

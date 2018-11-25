@@ -18,11 +18,13 @@ def get_assessment(assessment_id):  # noqa: E501
     return 'do some magic!'
 
 
-def get_assessment_findingis(page=None, page_size=None):  # noqa: E501
+def get_assessment_findingis(assessment_id, page=None, page_size=None):  # noqa: E501
     """Get a list of findings in assessment
 
      # noqa: E501
 
+    :param assessment_id: Assessment ID
+    :type assessment_id: int
     :param page: Number of page
     :type page: int
     :param page_size: Number of items returned

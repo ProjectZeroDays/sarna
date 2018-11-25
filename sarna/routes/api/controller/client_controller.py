@@ -1,6 +1,7 @@
 from sarna.core.auth import current_user
 from sarna.model import Client as ClientORM
 from sarna.model import User as UserORM
+from sarna.routes.api import util
 from sarna.routes.api.models import PaginatedEnvelop
 from sarna.routes.api.models.client import Client
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
@@ -75,18 +76,18 @@ def get_clients(page=None, page_size=None):  # noqa: E501
         (ClientORM.auditors.any(UserORM.id == current_user.id))
     )
     total_count = clients_query.count()
-    clientsOrm = clients_query.limit(page_size).skip(page*page_size)
+    clientsOrm = clients_query.limit(page_size).offset(page*page_size)
 
     data = PaginatedEnvelop(
         total=total_count,
         page_size=page_size,
         page=page,
         data=[
-            Client(**c.to_dict()) for c in clientsOrm
+            Client.from_dict(c.to_dict()) for c in clientsOrm
         ]
     )
 
-    return data
+    return data.to_dict()
 
 
 def get_users(page=None, page_size=None):  # noqa: E501

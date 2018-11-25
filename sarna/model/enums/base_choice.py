@@ -43,3 +43,6 @@ class BaseChoice(OrderedEnum):
 
     def __hash__(self):
         return self.value
+
+    def __html__(self):
+        return self.name

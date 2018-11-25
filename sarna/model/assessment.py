@@ -84,6 +84,9 @@ class Assessment(Base, db.Model):
 
     auditors = db.relationship('User', secondary=assessment_audit, back_populates='audited_assessments')
 
+    def __html__(self):
+        return "Assessment:{}".format(self.id)
+
     def _aggregate_score(self, field):
         counter = Counter(
             map(

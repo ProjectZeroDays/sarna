@@ -206,6 +206,12 @@ paths:
       summary: "Get a list of findings in assessment"
       operationId: "get_assessment_findingis"
       parameters:
+      - name: "assessment_id"
+        in: "path"
+        description: "Assessment ID"
+        required: true
+        type: "integer"
+        format: "int64"
       - name: "page"
         in: "query"
         description: "Number of page"
@@ -326,6 +332,9 @@ definitions:
         description: "Current page number"
       data:
         type: "array"
+        items:
+          type: "object"
+          properties: {}
       error:
         $ref: "#/definitions/Error"
   Error:

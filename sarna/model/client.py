@@ -47,6 +47,9 @@ class Client(Base, db.Model):
     managers = db.relationship('User', secondary=client_management, back_populates='managed_clients')
     auditors = db.relationship('User', secondary=client_audit, back_populates='audited_clients')
 
+    def __html__(self):
+        return "Client:{}".format(self.id)
+
     def template_path(self):
         return os.path.join(config.TEMPLATES_PATH, str(self.id))
 
