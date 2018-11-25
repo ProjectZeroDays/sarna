@@ -24,6 +24,8 @@ consumes:
 - "application/json"
 produces:
 - "application/json"
+security:
+- api_key: []
 paths:
   /client:
     get:
@@ -306,6 +308,7 @@ securityDefinitions:
     type: "apiKey"
     name: "Api-Key"
     in: "header"
+    x-apikeyInfoFunc: sarna.routes.api.security.api_key_info
 definitions:
   Envelop:
     type: "object"
