@@ -57,6 +57,26 @@ paths:
         200:
           description: "List of clients"
       x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+    post:
+      tags:
+      - "client"
+      summary: "Create a new client"
+      operationId: "create_client"
+      parameters:
+      - in: "body"
+        name: "client"
+        description: "The client to create."
+        required: false
+        schema:
+          $ref: "#/definitions/Client"
+      responses:
+        201:
+          description: "Client data"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Envelop"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
   /client/{client_id}:
     get:
       tags:
@@ -269,38 +289,6 @@ paths:
         200:
           description: "List of Finding Templates"
       x-swagger-router-controller: "sarna.routes.api.controller.finding_controller"
-  /user:
-    get:
-      tags:
-      - "client"
-      summary: "Get a list of Users"
-      operationId: "get_users"
-      parameters:
-      - name: "page"
-        in: "query"
-        description: "Number of page"
-        required: false
-        type: "integer"
-        default: 0
-        minimum: 0
-        exclusiveMinimum: false
-        format: "int32"
-      - name: "page_size"
-        in: "query"
-        description: "Number of items returned"
-        required: false
-        type: "integer"
-        default: 10
-        maximum: 100
-        exclusiveMaximum: false
-        minimum: 0
-        exclusiveMinimum: true
-        multipleOf: 10.0
-        format: "int32"
-      responses:
-        200:
-          description: "List of Users"
-      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -447,6 +435,9 @@ definitions:
     type: "object"
   Client:
     type: "object"
+    required:
+    - "long_name"
+    - "short_name"
     properties:
       short_name:
         type: "string"
@@ -462,6 +453,13 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/UserName"
+    example:
+      creator: "username"
+      short_name: "ACME"
+      long_name: "ACME Global Corp Inc."
+      managers:
+      - "username"
+      - "username"
   Template:
     type: "object"
     properties:
@@ -504,11 +502,32 @@ definitions:
       creation_date:
         type: "string"
         format: "date-time"
+    example:
+      creator: "username"
+      name: "assessment-1"
+      auditors:
+      - "username"
+      - "username"
+      client:
+        creator: "username"
+        short_name: "ACME"
+        long_name: "ACME Global Corp Inc."
+        managers:
+        - "username"
+        - "username"
+      id: 1
+      creation_date: "2000-01-23T04:56:07.000+00:00"
+      lang: "Spanish"
+      type: "Web"
+      platform: "example.com"
+      status: "Open"
   UserName:
     type: "string"
     example: "username"
   User:
     type: "object"
+    required:
+    - "username"
     properties:
       username:
         $ref: "#/definitions/UserName"
@@ -543,6 +562,8 @@ responses:
     description: "Forbidden"
     schema:
       $ref: "#/definitions/Envelop"
+  NoContent:
+    description: "No Content"
   NotFound:
     description: "The specified resource was not found"
     schema:

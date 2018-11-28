@@ -76,6 +76,8 @@ class Client(Model):
         :param short_name: The short_name of this Client.
         :type short_name: str
         """
+        if short_name is None:
+            raise ValueError("Invalid value for `short_name`, must not be `None`")  # noqa: E501
         if short_name is not None and len(short_name) > 64:
             raise ValueError("Invalid value for `short_name`, length must be less than or equal to `64`")  # noqa: E501
 
@@ -99,6 +101,8 @@ class Client(Model):
         :param long_name: The long_name of this Client.
         :type long_name: str
         """
+        if long_name is None:
+            raise ValueError("Invalid value for `long_name`, must not be `None`")  # noqa: E501
         if long_name is not None and len(long_name) > 128:
             raise ValueError("Invalid value for `long_name`, length must be less than or equal to `128`")  # noqa: E501
 

@@ -50,8 +50,6 @@ assessment_audit = db.Table(
 
 
 class Assessment(Base, db.Model):
-    _exclude_attrs = ["client_id", "creator_id", "approvals"]
-
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(GUID, default=uuid4, unique=True, nullable=False)
     name = db.Column(db.String(64), nullable=False)

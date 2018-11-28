@@ -67,6 +67,8 @@ class User(Model):
         :param username: The username of this User.
         :type username: UserName
         """
+        if username is None:
+            raise ValueError("Invalid value for `username`, must not be `None`")  # noqa: E501
 
         self._username = username
 

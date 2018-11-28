@@ -1,10 +1,43 @@
+import connexion
+from flask import abort
+
 from sarna.core.auth import current_user
+from sarna.model import Assessment as AssessmentORM
 from sarna.model import Client as ClientORM
 from sarna.model import User as UserORM
-from sarna.routes.api import util
-from sarna.routes.api.models import PaginatedEnvelop
+from sarna.routes.api.models import PaginatedEnvelop, Assessment
 from sarna.routes.api.models.client import Client
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
+
+
+def create_assessment(client=None):  # noqa: E501
+    """Create a new assessment for client
+
+     # noqa: E501
+
+    :param client: The assessment to create.
+    :type client: dict | bytes
+
+    :rtype: None
+    """
+    if connexion.request.is_json:
+        client = Assessment.from_dict(connexion.request.get_json())  # noqa: E501
+    return 'do some magic!'
+
+
+def create_client(client=None):  # noqa: E501
+    """Create a new client
+
+     # noqa: E501
+
+    :param client: The client to create.
+    :type client: dict | bytes
+
+    :rtype: None
+    """
+    if connexion.request.is_json:
+        client = Client.from_dict(connexion.request.get_json())  # noqa: E501
+    return 'do some magic!'
 
 
 def get_client(client_id):  # noqa: E501
@@ -18,10 +51,10 @@ def get_client(client_id):  # noqa: E501
     :rtype: None
     """
     clientOrm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
-    client: Client = Client(**clientOrm.to_dict())
-    data = Envelop(data=client)
+    if not current_user.audits(clientOrm):
+        abort(403)
 
-    return data
+    return Envelop(data=Client(clientOrm)).to_dict()
 
 
 def get_client_assessments(client_id, page=None, page_size=None):  # noqa: E501
@@ -38,7 +71,23 @@ def get_client_assessments(client_id, page=None, page_size=None):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    clientOrm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
+    if not current_user.audits(clientOrm):
+        abort(403)
+
+    assessments_query = AssessmentORM.query.filter_by(client_id=client_id)
+    total_count = assessments_query.count()
+    assessmentsOrm = assessments_query.limit(page_size).offset(page_size * page)
+    data = PaginatedEnvelop(
+        total=total_count,
+        page_size=page_size,
+        page=page,
+        data=[
+            Assessment.from_dict(a.to_dict()) for a in assessmentsOrm
+        ]
+    )
+
+    return data.to_dict()
 
 
 def get_client_templates(client_id, page=None, page_size=None):  # noqa: E501
@@ -76,7 +125,7 @@ def get_clients(page=None, page_size=None):  # noqa: E501
         (ClientORM.auditors.any(UserORM.id == current_user.id))
     )
     total_count = clients_query.count()
-    clientsOrm = clients_query.limit(page_size).offset(page*page_size)
+    clientsOrm = clients_query.limit(page_size).offset(page * page_size)
 
     data = PaginatedEnvelop(
         total=total_count,
@@ -90,16 +139,16 @@ def get_clients(page=None, page_size=None):  # noqa: E501
     return data.to_dict()
 
 
-def get_users(page=None, page_size=None):  # noqa: E501
-    """Get a list of Users
+def modify_client(client=None):  # noqa: E501
+    """Modify client
 
      # noqa: E501
 
-    :param page: Number of page
-    :type page: int
-    :param page_size: Number of items returned
-    :type page_size: int
+    :param client: The client to create.
+    :type client: dict | bytes
 
     :rtype: None
     """
+    if connexion.request.is_json:
+        client = Client.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
