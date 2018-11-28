@@ -34,6 +34,9 @@ securityDefinitions:
     name: "Api-Key"
     in: header
 
+security:
+- api_key: []
+
 parameters:
   page_size:
     name: page_size
@@ -101,6 +104,7 @@ paths:
             - type: object
               properties:
                 data:
+                  type: array
                   items:
                     $ref: '#/definitions/Client'
   /client/{client_id}:
@@ -396,12 +400,12 @@ definitions:
         type: integer
         description: "Current page number"
         example: 0
+      error:
+        $ref: '#/definitions/Error'
       data:
         type: array
         items:
           type: object
-      error:
-        $ref: '#/definitions/Error'
   Error:
     type: object
     properties:
@@ -512,11 +516,11 @@ definitions:
         example: "ACME Global Corp Inc."
         maxLength: 128
       creator:
-        $ref: '#/definitions/UserName'
+        $ref: '#/definitions/User'
       managers:
         type: array
         items:
-          $ref: '#/definitions/UserName'
+          $ref: '#/definitions/User'
   Template:
     type: object
     properties:
@@ -555,11 +559,11 @@ definitions:
       client:
         $ref: '#/definitions/Client'
       creator:
-        $ref: '#/definitions/UserName'
+        $ref: '#/definitions/User'
       auditors:
         type: array
         items:
-          $ref: '#/definitions/UserName'
+          $ref: '#/definitions/User'
       creation_date:
         type: string
         format: date-time

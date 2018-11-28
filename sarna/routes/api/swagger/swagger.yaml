@@ -289,6 +289,38 @@ paths:
         200:
           description: "List of Finding Templates"
       x-swagger-router-controller: "sarna.routes.api.controller.finding_controller"
+  /user:
+    get:
+      tags:
+      - "client"
+      summary: "Get a list of Users"
+      operationId: "get_users"
+      parameters:
+      - name: "page"
+        in: "query"
+        description: "Number of page"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        exclusiveMinimum: false
+        format: "int32"
+      - name: "page_size"
+        in: "query"
+        description: "Number of items returned"
+        required: false
+        type: "integer"
+        default: 10
+        maximum: 100
+        exclusiveMaximum: false
+        minimum: 0
+        exclusiveMinimum: true
+        multipleOf: 10.0
+        format: "int32"
+      responses:
+        200:
+          description: "List of Users"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
 securityDefinitions:
   api_key:
     type: "apiKey"

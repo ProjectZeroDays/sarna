@@ -18,7 +18,7 @@ def auto_commit(resp):
     return resp
 
 
-class Base(object):
+class Base(dict):
     query: Query
 
     @declared_attr
@@ -27,17 +27,45 @@ class Base(object):
 
     def __init__(self, *args, **kwargs):
         db.Model.__init__(self, *args, **kwargs)
+        super().__init__(**kwargs)
 
     def set(self, **kwargs):
         for key, val in kwargs.items():
             setattr(self, key, val)
 
     def to_dict(self):
-        d = {}
-        for attr in self.__mapper__.attrs.keys():
-            d[attr] = getattr(self, attr)
+        return self
 
-        return d
+    def __len__(self):
+        return len(self.__mapper__.attrs.keys())
+
+    def __getitem__(self, key):
+        if key not in self:
+            raise KeyError('key ot found', key)
+        return getattr(self, key, None)
+
+    def __setitem__(self, key, value):
+        if key not in self:
+            raise KeyError('Invalid key for current schema', key)
+        setattr(self, key, value)
+
+    def __delitem__(self, key):
+        if key not in self:
+            raise KeyError('key ot found', key)
+        setattr(self, key, None)
+
+    def __iter__(self):
+        for attr in self.__mapper__.attrs.keys():
+            yield getattr(self, attr)
+
+    def __contains__(self, item):
+        return item in self.__mapper__.attrs.keys()
+
+    def __hash__(self):
+        h = 0
+        for k, v in self.items():
+            h = h ^ hash(v)
+        return h
 
     def delete(self, synchronize_session=False):
         self.query.delete(synchronize_session=synchronize_session)
