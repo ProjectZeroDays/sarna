@@ -16,11 +16,14 @@ login_manager.login_message_category = 'success'
 current_user: User = current_user
 
 
+def api_key_info(api_key, required_scopes=None):
+    return api_key
+
+
 @login_manager.request_loader
 def load_user_from_request(request):
-    access_token = request.headers.get('Authorization', '').split()
-    if len(access_token) == 2 and access_token[0] == 'Bearer':
-        access_token = access_token[1]
+    access_token = request.headers.get('Api-Key', '')
+    if access_token:
         user = User.query.filter_by(access_token=access_token).first()
         if user:
             return user

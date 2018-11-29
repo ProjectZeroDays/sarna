@@ -18,12 +18,16 @@ tags:
   description: "Access Finding database"
 - name: "assessment"
   description: "Operate with assessments"
+- name: "user"
+  description: "System Users"
 schemes:
 - "https"
 consumes:
 - "application/json"
 produces:
 - "application/json"
+security:
+- api_key: []
 paths:
   /client:
     get:
@@ -102,6 +106,36 @@ paths:
           schema:
             $ref: "#/definitions/Envelop"
       x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+    patch:
+      tags:
+      - "client"
+      summary: "Modify client"
+      operationId: "modify_client"
+      parameters:
+      - name: "client_id"
+        in: "path"
+        description: "Client ID"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "client"
+        description: "The client to create."
+        required: false
+        schema:
+          $ref: "#/definitions/Client"
+      responses:
+        204:
+          description: "No Content"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Envelop"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/Envelop"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
   /client/{client_id}/assessment:
     get:
       tags:
@@ -139,6 +173,36 @@ paths:
       responses:
         200:
           description: "Client Assessments data"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Envelop"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/Envelop"
+      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+    post:
+      tags:
+      - "client"
+      summary: "Create a new assessment for client"
+      operationId: "create_assessment"
+      parameters:
+      - name: "client_id"
+        in: "path"
+        description: "Client ID"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "client"
+        description: "The assessment to create."
+        required: false
+        schema:
+          $ref: "#/definitions/Assessment"
+      responses:
+        201:
+          description: "Client Assessment data"
         403:
           description: "Forbidden"
           schema:
@@ -194,6 +258,38 @@ paths:
           schema:
             $ref: "#/definitions/Envelop"
       x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+  /assessment:
+    get:
+      tags:
+      - "assessment"
+      summary: "Get a list of assessments"
+      operationId: "get_assessments"
+      parameters:
+      - name: "page"
+        in: "query"
+        description: "Number of page"
+        required: false
+        type: "integer"
+        default: 0
+        minimum: 0
+        exclusiveMinimum: false
+        format: "int32"
+      - name: "page_size"
+        in: "query"
+        description: "Number of items returned"
+        required: false
+        type: "integer"
+        default: 10
+        maximum: 100
+        exclusiveMaximum: false
+        minimum: 0
+        exclusiveMinimum: true
+        multipleOf: 10.0
+        format: "int32"
+      responses:
+        200:
+          description: "List of assessments"
+      x-swagger-router-controller: "sarna.routes.api.controller.assessment_controller"
   /assessment/{assessment_id}:
     get:
       tags:
@@ -292,7 +388,7 @@ paths:
   /user:
     get:
       tags:
-      - "client"
+      - "user"
       summary: "Get a list of Users"
       operationId: "get_users"
       parameters:
@@ -320,7 +416,7 @@ paths:
       responses:
         200:
           description: "List of Users"
-      x-swagger-router-controller: "sarna.routes.api.controller.client_controller"
+      x-swagger-router-controller: "sarna.routes.api.controller.user_controller"
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -350,13 +446,13 @@ definitions:
         type: "integer"
         example: 0
         description: "Current page number"
+      error:
+        $ref: "#/definitions/Error"
       data:
         type: "array"
         items:
           type: "object"
           properties: {}
-      error:
-        $ref: "#/definitions/Error"
   Error:
     type: "object"
     required:
@@ -480,18 +576,22 @@ definitions:
         example: "ACME Global Corp Inc."
         maxLength: 128
       creator:
-        $ref: "#/definitions/UserName"
+        $ref: "#/definitions/User"
       managers:
         type: "array"
         items:
-          $ref: "#/definitions/UserName"
+          $ref: "#/definitions/User"
     example:
-      creator: "username"
+      creator:
+        user_type: "manager"
+        username: "username"
       short_name: "ACME"
       long_name: "ACME Global Corp Inc."
       managers:
-      - "username"
-      - "username"
+      - user_type: "manager"
+        username: "username"
+      - user_type: "manager"
+        username: "username"
   Template:
     type: "object"
     properties:
@@ -526,27 +626,35 @@ definitions:
       client:
         $ref: "#/definitions/Client"
       creator:
-        $ref: "#/definitions/UserName"
+        $ref: "#/definitions/User"
       auditors:
         type: "array"
         items:
-          $ref: "#/definitions/UserName"
+          $ref: "#/definitions/User"
       creation_date:
         type: "string"
         format: "date-time"
     example:
-      creator: "username"
+      creator:
+        user_type: "manager"
+        username: "username"
       name: "assessment-1"
       auditors:
-      - "username"
-      - "username"
+      - user_type: "manager"
+        username: "username"
+      - user_type: "manager"
+        username: "username"
       client:
-        creator: "username"
+        creator:
+          user_type: "manager"
+          username: "username"
         short_name: "ACME"
         long_name: "ACME Global Corp Inc."
         managers:
-        - "username"
-        - "username"
+        - user_type: "manager"
+          username: "username"
+        - user_type: "manager"
+          username: "username"
       id: 1
       creation_date: "2000-01-23T04:56:07.000+00:00"
       lang: "Spanish"
@@ -565,6 +673,9 @@ definitions:
         $ref: "#/definitions/UserName"
       user_type:
         $ref: "#/definitions/UserType"
+    example:
+      user_type: "manager"
+      username: "username"
 parameters:
   page_size:
     name: "page_size"

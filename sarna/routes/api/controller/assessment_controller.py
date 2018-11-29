@@ -54,3 +54,18 @@ def get_assessment_findingis(assessment_id, page=None, page_size=None):  # noqa:
         ]
     )
     return data.to_dict()
+
+
+def get_assessments(page=None, page_size=None):  # noqa: E501
+    """Get a list of assessments
+
+     # noqa: E501
+
+    :param page: Number of page
+    :type page: int
+    :param page_size: Number of items returned
+    :type page_size: int
+
+    :rtype: None
+    """
+    return 'do some magic!'

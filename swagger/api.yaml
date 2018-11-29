@@ -33,6 +33,7 @@ securityDefinitions:
     type: apiKey
     name: "Api-Key"
     in: header
+    x-apikeyInfoFunc: sarna.core.auth.api_key_info
 
 security:
 - api_key: []
