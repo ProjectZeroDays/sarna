@@ -1,18 +1,10 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
-from sarna.routes.api.models.finding_type import FindingType
-from sarna.routes.api.models.owasp_category import OWASPCategory
-from sarna.routes.api.models.owasp_mobile_top10_category import OWASPMobileTop10Category
-from sarna.routes.api.models.owisam_category import OWISAMCategory
-from sarna.routes.api.models.score import Score
-from sarna.routes.api.models.user import User
+from sarna.routes.api.models import FindingType, OWASPCategory, OWASPMobileTop10Category, OWISAMCategory, Score, User
+from sarna.routes.api.models.base_model_ import Model
 
 
 class FindingTemplate(Model):

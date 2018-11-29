@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
+from typing import List  # noqa: F401
 
-from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models import AffectedResource
+from sarna.routes.api.models.base_model_ import Model
 
 
 class Active(Model):
@@ -15,15 +15,26 @@ class Active(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self):  # noqa: E501
+    def __init__(self, name=None, active_resources=None):  # noqa: E501
         """Active - a model defined in OpenAPI
 
+        :param name: The name of this Active.  # noqa: E501
+        :type name: str
+        :param active_resources: The active_resources of this Active.  # noqa: E501
+        :type active_resources: List[AffectedResource]
         """
         self.openapi_types = {
+            'name': str,
+            'active_resources': List[AffectedResource]
         }
 
         self.attribute_map = {
+            'name': 'name',
+            'active_resources': 'active_resources'
         }
+
+        self._name = name
+        self._active_resources = active_resources
 
     @classmethod
     def from_dict(cls, dikt) -> 'Active':
@@ -35,3 +46,45 @@ class Active(Model):
         :rtype: Active
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def name(self):
+        """Gets the name of this Active.
+
+
+        :return: The name of this Active.
+        :rtype: str
+        """
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        """Sets the name of this Active.
+
+
+        :param name: The name of this Active.
+        :type name: str
+        """
+
+        self._name = name
+
+    @property
+    def active_resources(self):
+        """Gets the active_resources of this Active.
+
+
+        :return: The active_resources of this Active.
+        :rtype: List[AffectedResource]
+        """
+        return self._active_resources
+
+    @active_resources.setter
+    def active_resources(self, active_resources):
+        """Sets the active_resources of this Active.
+
+
+        :param active_resources: The active_resources of this Active.
+        :type active_resources: List[AffectedResource]
+        """
+
+        self._active_resources = active_resources

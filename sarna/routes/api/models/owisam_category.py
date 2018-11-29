@@ -1,12 +1,9 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.base_model_ import Model
 
 
 class OWISAMCategory(Model):
@@ -18,7 +15,70 @@ class OWISAMCategory(Model):
     """
     allowed enum values
     """
-    DI_001 = "DI-001"
+    DI_001 = "DI_001"
+    DI_002 = "DI_002"
+    DI_003 = "DI_003"
+    DI_004 = "DI_004"
+    DI_005 = "DI_005"
+    DI_006 = "DI_006"
+    FP_001 = "FP_001"
+    FP_002 = "FP_002"
+    FP_003 = "FP_003"
+    FP_004 = "FP_004"
+    FP_005 = "FP_005"
+    FP_006 = "FP_006"
+    AU_001 = "AU_001"
+    AU_002 = "AU_002"
+    AU_003 = "AU_003"
+    AU_004 = "AU_004"
+    AU_005 = "AU_005"
+    AU_006 = "AU_006"
+    AU_007 = "AU_007"
+    AU_008 = "AU_008"
+    CP_001 = "CP_001"
+    CP_002 = "CP_002"
+    CP_003 = "CP_003"
+    CP_004 = "CP_004"
+    CP_005 = "CP_005"
+    CP_006 = "CP_006"
+    CF_001 = "CF_001"
+    CF_002 = "CF_002"
+    CF_003 = "CF_003"
+    CF_004 = "CF_004"
+    CF_005 = "CF_005"
+    CF_006 = "CF_006"
+    IF_001 = "IF_001"
+    IF_002 = "IF_002"
+    IF_003 = "IF_003"
+    IF_004 = "IF_004"
+    IF_005 = "IF_005"
+    IF_006 = "IF_006"
+    IF_007 = "IF_007"
+    IF_008 = "IF_008"
+    IF_009 = "IF_009"
+    IF_010 = "IF_010"
+    DS_001 = "DS_001"
+    DS_002 = "DS_002"
+    DS_003 = "DS_003"
+    DS_004 = "DS_004"
+    DS_005 = "DS_005"
+    GD_001 = "GD_001"
+    GD_002 = "GD_002"
+    GD_003 = "GD_003"
+    GD_004 = "GD_004"
+    GD_005 = "GD_005"
+    GD_006 = "GD_006"
+    CT_001 = "CT_001"
+    CT_002 = "CT_002"
+    CT_003 = "CT_003"
+    CT_004 = "CT_004"
+    CT_005 = "CT_005"
+    CT_006 = "CT_006"
+    CT_007 = "CT_007"
+    HS_001 = "HS_001"
+    HS_002 = "HS_002"
+    HS_003 = "HS_003"
+    HS_004 = "HS_004"
 
     def __init__(self):  # noqa: E501
         """OWISAMCategory - a model defined in OpenAPI

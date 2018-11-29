@@ -2,10 +2,6 @@
 
 from __future__ import absolute_import
 
-from flask import json
-from six import BytesIO
-
-from sarna.routes.api.models.envelop import Envelop  # noqa: E501
 from sarna.routes.api.test import BaseTestCase
 
 

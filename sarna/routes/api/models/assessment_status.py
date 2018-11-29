@@ -1,12 +1,9 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.base_model_ import Model
 
 
 class AssessmentStatus(Model):
@@ -19,6 +16,8 @@ class AssessmentStatus(Model):
     allowed enum values
     """
     OPEN = "Open"
+    CLOSED = "Closed"
+    ARCHIVED = "Archived"
 
     def __init__(self):  # noqa: E501
         """AssessmentStatus - a model defined in OpenAPI

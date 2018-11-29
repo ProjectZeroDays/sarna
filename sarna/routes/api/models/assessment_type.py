@@ -1,12 +1,9 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.base_model_ import Model
 
 
 class AssessmentType(Model):
@@ -19,6 +16,11 @@ class AssessmentType(Model):
     allowed enum values
     """
     WEB = "Web"
+    EXTERNAL_PENTEST = "External_pentest"
+    MOBILE = "Mobile"
+    IOS = "iOS"
+    ANDROID = "Android"
+    WIFI = "WiFi"
 
     def __init__(self):  # noqa: E501
         """AssessmentType - a model defined in OpenAPI

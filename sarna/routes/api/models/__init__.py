@@ -4,6 +4,7 @@
 from __future__ import absolute_import
 # import models into model package
 from sarna.routes.api.models.active import Active
+from sarna.routes.api.models.affected_resource import AffectedResource
 from sarna.routes.api.models.assessment import Assessment
 from sarna.routes.api.models.assessment_status import AssessmentStatus
 from sarna.routes.api.models.assessment_type import AssessmentType
@@ -11,8 +12,10 @@ from sarna.routes.api.models.client import Client
 from sarna.routes.api.models.envelop import Envelop
 from sarna.routes.api.models.error import Error
 from sarna.routes.api.models.finding import Finding
+from sarna.routes.api.models.finding_resume import FindingResume
 from sarna.routes.api.models.finding_status import FindingStatus
 from sarna.routes.api.models.finding_template import FindingTemplate
+from sarna.routes.api.models.finding_template_resume import FindingTemplateResume
 from sarna.routes.api.models.finding_type import FindingType
 from sarna.routes.api.models.images import Images
 from sarna.routes.api.models.language import Language

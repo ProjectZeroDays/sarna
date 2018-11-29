@@ -1,12 +1,9 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.base_model_ import Model
 
 
 class OWASPMobileTop10Category(Model):
@@ -19,6 +16,15 @@ class OWASPMobileTop10Category(Model):
     allowed enum values
     """
     M1 = "M1"
+    M2 = "M2"
+    M3 = "M3"
+    M4 = "M4"
+    M5 = "M5"
+    M6 = "M6"
+    M7 = "M7"
+    M8 = "M8"
+    M9 = "M9"
+    M10 = "M10"
 
     def __init__(self):  # noqa: E501
         """OWASPMobileTop10Category - a model defined in OpenAPI

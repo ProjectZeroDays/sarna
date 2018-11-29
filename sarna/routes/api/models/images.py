@@ -1,12 +1,9 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.base_model_ import Model
 
 
 class Images(Model):
@@ -15,15 +12,21 @@ class Images(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self):  # noqa: E501
+    def __init__(self, name=None):  # noqa: E501
         """Images - a model defined in OpenAPI
 
+        :param name: The name of this Images.  # noqa: E501
+        :type name: str
         """
         self.openapi_types = {
+            'name': str
         }
 
         self.attribute_map = {
+            'name': 'name'
         }
+
+        self._name = name
 
     @classmethod
     def from_dict(cls, dikt) -> 'Images':
@@ -35,3 +38,28 @@ class Images(Model):
         :rtype: Images
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def name(self):
+        """Gets the name of this Images.
+
+
+        :return: The name of this Images.
+        :rtype: str
+        """
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        """Sets the name of this Images.
+
+
+        :param name: The name of this Images.
+        :type name: str
+        """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
+        if name is not None and len(name) > 128:
+            raise ValueError("Invalid value for `name`, length must be less than or equal to `128`")  # noqa: E501
+
+        self._name = name

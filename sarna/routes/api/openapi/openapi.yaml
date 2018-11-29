@@ -729,11 +729,18 @@ components:
     AssessmentType:
       enum:
       - Web
+      - External_pentest
+      - Mobile
+      - iOS
+      - Android
+      - WiFi
       example: Web
       type: string
     AssessmentStatus:
       enum:
       - Open
+      - Closed
+      - Archived
       example: Open
       type: string
     FindingType:
@@ -747,6 +754,10 @@ components:
     FindingStatus:
       enum:
       - Pending
+      - Reviewed
+      - Confirmed
+      - False_Positive
+      - Other
       example: Pending
       type: string
     Language:
@@ -768,16 +779,176 @@ components:
     OWASPMobileTop10Category:
       enum:
       - M1
+      - M2
+      - M3
+      - M4
+      - M5
+      - M6
+      - M7
+      - M8
+      - M9
+      - M10
       example: M1
       type: string
     OWISAMCategory:
       enum:
-      - DI-001
+      - DI_001
+      - DI_002
+      - DI_003
+      - DI_004
+      - DI_005
+      - DI_006
+      - FP_001
+      - FP_002
+      - FP_003
+      - FP_004
+      - FP_005
+      - FP_006
+      - AU_001
+      - AU_002
+      - AU_003
+      - AU_004
+      - AU_005
+      - AU_006
+      - AU_007
+      - AU_008
+      - CP_001
+      - CP_002
+      - CP_003
+      - CP_004
+      - CP_005
+      - CP_006
+      - CF_001
+      - CF_002
+      - CF_003
+      - CF_004
+      - CF_005
+      - CF_006
+      - IF_001
+      - IF_002
+      - IF_003
+      - IF_004
+      - IF_005
+      - IF_006
+      - IF_007
+      - IF_008
+      - IF_009
+      - IF_010
+      - DS_001
+      - DS_002
+      - DS_003
+      - DS_004
+      - DS_005
+      - GD_001
+      - GD_002
+      - GD_003
+      - GD_004
+      - GD_005
+      - GD_006
+      - CT_001
+      - CT_002
+      - CT_003
+      - CT_004
+      - CT_005
+      - CT_006
+      - CT_007
+      - HS_001
+      - HS_002
+      - HS_003
+      - HS_004
       example: DI-001
       type: string
     OWASPCategory:
       enum:
-      - OTG-INFO-001
+      - OTG_INFO_001
+      - OTG_INFO_002
+      - OTG_INFO_003
+      - OTG_INFO_004
+      - OTG_INFO_005
+      - OTG_INFO_006
+      - OTG_INFO_007
+      - OTG_INFO_008
+      - OTG_INFO_009
+      - OTG_INFO_010
+      - OTG_CONFIG_001
+      - OTG_CONFIG_002
+      - OTG_CONFIG_003
+      - OTG_CONFIG_004
+      - OTG_CONFIG_005
+      - OTG_CONFIG_006
+      - OTG_CONFIG_007
+      - OTG_CONFIG_008
+      - OTG_IDENT_001
+      - OTG_IDENT_002
+      - OTG_IDENT_003
+      - OTG_IDENT_004
+      - OTG_IDENT_005
+      - OTG_IDENT_006
+      - OTG_IDENT_007
+      - OTG_AUTHN_001
+      - OTG_AUTHN_002
+      - OTG_AUTHN_003
+      - OTG_AUTHN_004
+      - OTG_AUTHN_005
+      - OTG_AUTHN_006
+      - OTG_AUTHN_007
+      - OTG_AUTHN_008
+      - OTG_AUTHN_009
+      - OTG_AUTHN_010
+      - OTG_AUTHZ_001
+      - OTG_AUTHZ_002
+      - OTG_AUTHZ_003
+      - OTG_AUTHZ_004
+      - OTG_SESS_001
+      - OTG_SESS_002
+      - OTG_SESS_003
+      - OTG_SESS_004
+      - OTG_SESS_005
+      - OTG_SESS_006
+      - OTG_SESS_007
+      - OTG_SESS_008
+      - OTG_INPVAL_001
+      - OTG_INPVAL_002
+      - OTG_INPVAL_003
+      - OTG_INPVAL_004
+      - OTG_INPVAL_005
+      - OTG_INPVAL_006
+      - OTG_INPVAL_007
+      - OTG_INPVAL_008
+      - OTG_INPVAL_009
+      - OTG_INPVAL_010
+      - OTG_INPVAL_011
+      - OTG_INPVAL_012
+      - OTG_INPVAL_013
+      - OTG_INPVAL_014
+      - OTG_INPVAL_015
+      - OTG_INPVAL_016
+      - OTG_ERR_001
+      - OTG_ERR_002
+      - OTG_CRYPST_001
+      - OTG_CRYPST_002
+      - OTG_CRYPST_003
+      - OTG_BUSLOGIC_001
+      - OTG_BUSLOGIC_002
+      - OTG_BUSLOGIC_003
+      - OTG_BUSLOGIC_004
+      - OTG_BUSLOGIC_005
+      - OTG_BUSLOGIC_006
+      - OTG_BUSLOGIC_007
+      - OTG_BUSLOGIC_008
+      - OTG_BUSLOGIC_009
+      - OTG_CLIENT_001
+      - OTG_CLIENT_002
+      - OTG_CLIENT_003
+      - OTG_CLIENT_004
+      - OTG_CLIENT_005
+      - OTG_CLIENT_006
+      - OTG_CLIENT_007
+      - OTG_CLIENT_008
+      - OTG_CLIENT_009
+      - OTG_CLIENT_010
+      - OTG_CLIENT_011
+      - OTG_CLIENT_012
       example: OTG-INFO-001
       type: string
     FindingTemplate:
@@ -811,11 +982,100 @@ components:
         creator:
           $ref: '#/components/schemas/User'
       type: object
+    FindingTemplateResume:
+      properties:
+        id:
+          example: 1
+          format: int32
+          type: integer
+        name:
+          example: xss-vulne-stored
+          maxLength: 64
+          type: string
+      type: object
     Finding:
+      properties:
+        id:
+          example: 1
+          format: int32
+          type: integer
+        name:
+          maxLength: 60
+          type: string
+        template:
+          $ref: '#/components/schemas/FindingTemplateResume'
+        title:
+          maxLength: 128
+          type: string
+        status:
+          $ref: '#/components/schemas/FindingStatus'
+        type:
+          $ref: '#/components/schemas/FindingType'
+        owasp_category:
+          $ref: '#/components/schemas/OWASPCategory'
+        owasp_mobile_category:
+          $ref: '#/components/schemas/OWASPMobileTop10Category'
+        owisam_category:
+          $ref: '#/components/schemas/OWISAMCategory'
+        tech_risk:
+          $ref: '#/components/schemas/Score'
+        business_risk:
+          $ref: '#/components/schemas/Score'
+        exploitability:
+          $ref: '#/components/schemas/Score'
+        dissemination:
+          $ref: '#/components/schemas/Score'
+        solution_complexity:
+          $ref: '#/components/schemas/Score'
+        description:
+          type: string
+        solution:
+          type: string
+        definition:
+          type: string
+        references:
+          type: string
+        cvss_v3_vector:
+          maxLength: 128
+          type: string
+      type: object
+    FindingResume:
+      properties:
+        id:
+          example: 1
+          format: int32
+          type: integer
+        name:
+          maxLength: 60
+          type: string
+        title:
+          maxLength: 128
+          type: string
+      type: object
+    AffectedResource:
+      properties:
+        route:
+          maxLength: 256
+          type: string
+        findings:
+          $ref: '#/components/schemas/FindingResume'
       type: object
     Active:
+      properties:
+        name:
+          type: string
+        active_resources:
+          items:
+            $ref: '#/components/schemas/AffectedResource'
+          type: array
       type: object
     Images:
+      properties:
+        name:
+          maxLength: 128
+          type: string
+      required:
+      - name
       type: object
     Client:
       example:

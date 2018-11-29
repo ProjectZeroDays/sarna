@@ -1,14 +1,14 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
+from datetime import datetime  # noqa: F401
+from typing import List  # noqa: F401
 
+from sarna.routes.api import util
 from sarna.routes.api.models.assessment_status import AssessmentStatus
 from sarna.routes.api.models.assessment_type import AssessmentType
 from sarna.routes.api.models.base_model_ import Model
-from sarna.routes.api import util
 from sarna.routes.api.models.client import Client
 from sarna.routes.api.models.language import Language
 from sarna.routes.api.models.user import User
