@@ -5,7 +5,6 @@ from __future__ import absolute_import
 from typing import List  # noqa: F401
 
 from sarna.routes.api import util
-from sarna.routes.api.models import AffectedResource
 from sarna.routes.api.models.base_model_ import Model
 
 
@@ -23,6 +22,7 @@ class Active(Model):
         :param active_resources: The active_resources of this Active.  # noqa: E501
         :type active_resources: List[AffectedResource]
         """
+        from sarna.routes.api.models import AffectedResource
         self.openapi_types = {
             'name': str,
             'active_resources': List[AffectedResource]

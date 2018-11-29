@@ -651,6 +651,9 @@ components:
       - short_name
       - long_name
       properties:
+        id:
+          type: integer
+          example: 1
         short_name:
           type: string
           example: "ACME"

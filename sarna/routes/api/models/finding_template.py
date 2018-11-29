@@ -3,7 +3,6 @@
 from __future__ import absolute_import
 
 from sarna.routes.api import util
-from sarna.routes.api.models import FindingType, OWASPCategory, OWASPMobileTop10Category, OWISAMCategory, Score, User
 from sarna.routes.api.models.base_model_ import Model
 
 
@@ -41,6 +40,8 @@ class FindingTemplate(Model):
         :param creator: The creator of this FindingTemplate.  # noqa: E501
         :type creator: User
         """
+        from sarna.routes.api.models import FindingType, OWASPCategory, OWASPMobileTop10Category, OWISAMCategory, Score, \
+            User
         self.openapi_types = {
             'id': int,
             'name': str,

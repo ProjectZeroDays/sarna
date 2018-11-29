@@ -57,7 +57,7 @@ def get_client(client_id):  # noqa: E501
     if not current_user.audits(clientOrm):
         abort(403)
 
-    return Envelop(data=Client(clientOrm)).to_dict()
+    return Envelop(data=Client.from_dict(clientOrm)).to_dict()
 
 
 def get_client_assessments(client_id, page=None, page_size=None):  # noqa: E501

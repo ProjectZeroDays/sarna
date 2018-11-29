@@ -3,8 +3,6 @@
 from __future__ import absolute_import
 
 from sarna.routes.api import util
-from sarna.routes.api.models import FindingTemplateResume, FindingStatus, FindingType, OWASPCategory, \
-    OWASPMobileTop10Category, OWISAMCategory, Score
 from sarna.routes.api.models.base_model_ import Model
 
 
@@ -56,6 +54,8 @@ class Finding(Model):
         :param cvss_v3_vector: The cvss_v3_vector of this Finding.  # noqa: E501
         :type cvss_v3_vector: str
         """
+        from sarna.routes.api.models import FindingTemplateResume, FindingStatus, FindingType, OWASPCategory, \
+            OWASPMobileTop10Category, OWISAMCategory, Score
         self.openapi_types = {
             'id': int,
             'name': str,

@@ -73,21 +73,23 @@ def deserialize_date(string):
         return string
 
 
-def deserialize_datetime(string):
+def deserialize_datetime(value):
     """Deserializes string to datetime.
 
     The string should be in iso8601 datetime format.
 
-    :param string: str.
-    :type string: str
+    :param value: str.
+    :type value: str
     :return: datetime.
     :rtype: datetime
     """
+    if type(value) == datetime.datetime:
+        return value
     try:
         from dateutil.parser import parse
-        return parse(string)
+        return parse(value)
     except ImportError:
-        return string
+        return value
 
 
 def deserialize_model(data, klass):

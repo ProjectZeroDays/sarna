@@ -3,7 +3,6 @@
 from __future__ import absolute_import
 
 from sarna.routes.api import util
-from sarna.routes.api.models import FindingResume
 from sarna.routes.api.models.base_model_ import Model
 
 
@@ -21,6 +20,8 @@ class AffectedResource(Model):
         :param findings: The findings of this AffectedResource.  # noqa: E501
         :type findings: FindingResume
         """
+        from sarna.routes.api.models import FindingResume
+
         self.openapi_types = {
             'route': str,
             'findings': FindingResume
