@@ -3,8 +3,9 @@ from flask import abort
 from sarna.core.auth import current_user
 from sarna.model import Assessment as AssessmentORM
 from sarna.model import Finding as FindingORM
-from sarna.routes.api.models import Assessment, Finding, PaginatedEnvelop
+from sarna.routes.api.models import Assessment, Finding
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
+from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
 
 
 def get_assessment(assessment_id):  # noqa: E501
@@ -15,7 +16,7 @@ def get_assessment(assessment_id):  # noqa: E501
     :param assessment_id: Assessment ID
     :type assessment_id: int
 
-    :rtype: None
+    :rtype: Envelop
     """
     assessmentOrm: AssessmentORM = AssessmentORM.query.filter_by(id=assessment_id).one()
     if not current_user.audits(assessmentOrm):
@@ -36,7 +37,7 @@ def get_assessment_findingis(assessment_id, page=None, page_size=None):  # noqa:
     :param page_size: Number of items returned
     :type page_size: int
 
-    :rtype: None
+    :rtype: PaginatedEnvelop
     """
     assessmentOrm: AssessmentORM = AssessmentORM.query.filter_by(id=assessment_id).one()
     if not current_user.audits(assessmentOrm):
@@ -66,6 +67,6 @@ def get_assessments(page=None, page_size=None):  # noqa: E501
     :param page_size: Number of items returned
     :type page_size: int
 
-    :rtype: None
+    :rtype: PaginatedEnvelop
     """
     return 'do some magic!'

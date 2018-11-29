@@ -1,0 +1,943 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: rsrdesarrollo@gmail.com
+  description: API of SARNA (https://github.com/rsrdesarrollo/sarna/)
+  license:
+    name: GPLv3
+    url: https://www.gnu.org/licenses/gpl.txt
+  title: SARNA API
+  version: 1.0.0
+servers:
+- description: Development Server
+  url: http://localhost:5000/api/v1
+security:
+- bearerAuth: []
+tags:
+- description: Everything about your clients
+  name: client
+- description: Access Finding database
+  name: finding
+- description: Operate with assessments
+  name: assessment
+- description: System Users
+  name: user
+paths:
+  /client:
+    get:
+      operationId: get_clients
+      parameters:
+      - description: Number of page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          minimum: 0
+          type: integer
+        style: form
+      - description: Number of items returned
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          multipleOf: 10
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/PaginatedEnvelop'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/Client'
+                      type: array
+                  type: object
+          description: List of clients
+      summary: Get a list of clients
+      tags:
+      - client
+      x-openapi-router-controller: sarna.routes.api.controller.client_controller
+    post:
+      operationId: create_client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+        description: The client to create.
+        required: true
+      responses:
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: Forbidden
+        201:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Envelop'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/Client'
+                  type: object
+          description: Client data
+      summary: Create a new client
+      tags:
+      - client
+      x-openapi-router-controller: sarna.routes.api.controller.client_controller
+  /client/{client_id}:
+    get:
+      operationId: get_client
+      parameters:
+      - description: Client ID
+        explode: false
+        in: path
+        name: client_id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: The specified resource was not found
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: Forbidden
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Envelop'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/Client'
+                  type: object
+          description: Client data
+      summary: Get client data
+      tags:
+      - client
+      x-openapi-router-controller: sarna.routes.api.controller.client_controller
+    patch:
+      operationId: modify_client
+      parameters:
+      - description: Client ID
+        explode: false
+        in: path
+        name: client_id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+        description: The client to create.
+        required: true
+      responses:
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: The specified resource was not found
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: Forbidden
+        204:
+          description: No Content
+      summary: Modify client
+      tags:
+      - client
+      x-openapi-router-controller: sarna.routes.api.controller.client_controller
+  /client/{client_id}/assessment:
+    get:
+      operationId: get_client_assessments
+      parameters:
+      - description: Client ID
+        explode: false
+        in: path
+        name: client_id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: Number of page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          minimum: 0
+          type: integer
+        style: form
+      - description: Number of items returned
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          multipleOf: 10
+          type: integer
+        style: form
+      responses:
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: The specified resource was not found
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: Forbidden
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/PaginatedEnvelop'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/Assessment'
+                      type: array
+                  type: object
+          description: Client Assessments data
+      summary: Get list of assessment of the client
+      tags:
+      - client
+      x-openapi-router-controller: sarna.routes.api.controller.client_controller
+    post:
+      operationId: create_assessment
+      parameters:
+      - description: Client ID
+        explode: false
+        in: path
+        name: client_id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Assessment'
+        description: The assessment to create.
+        required: true
+      responses:
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: The specified resource was not found
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: Forbidden
+        201:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Envelop'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/Assessment'
+                  type: object
+          description: Client Assessment data
+      summary: Create a new assessment for client
+      tags:
+      - client
+      x-openapi-router-controller: sarna.routes.api.controller.client_controller
+  /client/{client_id}/template:
+    get:
+      operationId: get_client_templates
+      parameters:
+      - description: Client ID
+        explode: false
+        in: path
+        name: client_id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: Number of page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          minimum: 0
+          type: integer
+        style: form
+      - description: Number of items returned
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          multipleOf: 10
+          type: integer
+        style: form
+      responses:
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: The specified resource was not found
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: Forbidden
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/PaginatedEnvelop'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/Template'
+                      type: array
+                  type: object
+          description: Client Assessments data
+      summary: Get list of assessment of the client
+      tags:
+      - client
+      x-openapi-router-controller: sarna.routes.api.controller.client_controller
+  /assessment:
+    get:
+      operationId: get_assessments
+      parameters:
+      - description: Number of page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          minimum: 0
+          type: integer
+        style: form
+      - description: Number of items returned
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          multipleOf: 10
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/PaginatedEnvelop'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/Assessment'
+                      type: array
+                  type: object
+          description: List of assessments
+      summary: Get a list of assessments
+      tags:
+      - assessment
+      x-openapi-router-controller: sarna.routes.api.controller.assessment_controller
+  /assessment/{assessment_id}:
+    get:
+      operationId: get_assessment
+      parameters:
+      - description: Assessment ID
+        explode: false
+        in: path
+        name: assessment_id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: The specified resource was not found
+        403:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelop'
+          description: Forbidden
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Envelop'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/Assessment'
+                  type: object
+          description: Assessment data
+      summary: Get assessment data
+      tags:
+      - assessment
+      x-openapi-router-controller: sarna.routes.api.controller.assessment_controller
+  /assessment/{assessment_id}/findig:
+    get:
+      operationId: get_assessment_findingis
+      parameters:
+      - description: Assessment ID
+        explode: false
+        in: path
+        name: assessment_id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: Number of page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          minimum: 0
+          type: integer
+        style: form
+      - description: Number of items returned
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          multipleOf: 10
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/PaginatedEnvelop'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/Finding'
+                      type: array
+                  type: object
+          description: List of Findings
+      summary: Get a list of findings in assessment
+      tags:
+      - assessment
+      x-openapi-router-controller: sarna.routes.api.controller.assessment_controller
+  /findign:
+    get:
+      operationId: get_findign_templates
+      parameters:
+      - description: Number of page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          minimum: 0
+          type: integer
+        style: form
+      - description: Number of items returned
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          multipleOf: 10
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/PaginatedEnvelop'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/FindingTemplate'
+                      type: array
+                  type: object
+          description: List of Finding Templates
+      summary: Get a list of finding templates
+      tags:
+      - finding
+      x-openapi-router-controller: sarna.routes.api.controller.finding_controller
+  /user:
+    get:
+      operationId: get_users
+      parameters:
+      - description: Number of page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          minimum: 0
+          type: integer
+        style: form
+      - description: Number of items returned
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          format: int32
+          maximum: 100
+          minimum: 10
+          multipleOf: 10
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/PaginatedEnvelop'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/User'
+                      type: array
+                  type: object
+          description: List of Users
+      summary: Get a list of Users
+      tags:
+      - user
+      x-openapi-router-controller: sarna.routes.api.controller.user_controller
+components:
+  parameters:
+    user_id:
+      description: User ID
+      explode: false
+      in: path
+      name: user_id
+      required: true
+      schema:
+        type: string
+      style: simple
+    finding_id:
+      description: Finding ID
+      explode: false
+      in: path
+      name: finding_id
+      required: true
+      schema:
+        format: int32
+        type: integer
+      style: simple
+    assessment_id:
+      description: Assessment ID
+      explode: false
+      in: path
+      name: assessment_id
+      required: true
+      schema:
+        format: int32
+        type: integer
+      style: simple
+    client_id:
+      description: Client ID
+      explode: false
+      in: path
+      name: client_id
+      required: true
+      schema:
+        format: int32
+        type: integer
+      style: simple
+    page_size:
+      description: Number of items returned
+      explode: true
+      in: query
+      name: page_size
+      required: false
+      schema:
+        default: 10
+        format: int32
+        maximum: 100
+        minimum: 10
+        multipleOf: 10
+        type: integer
+      style: form
+    page:
+      description: Number of page
+      explode: true
+      in: query
+      name: page
+      required: false
+      schema:
+        default: 0
+        format: int32
+        minimum: 0
+        type: integer
+      style: form
+  responses:
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Envelop'
+      description: The specified resource was not found
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Envelop'
+      description: Forbidden
+    NoContent:
+      description: No Content
+  schemas:
+    Envelop:
+      properties:
+        data:
+          type: object
+        error:
+          $ref: '#/components/schemas/Error'
+      type: object
+    PaginatedEnvelop:
+      properties:
+        total:
+          description: Number of items
+          example: 3212
+          format: int32
+          type: integer
+        page_size:
+          description: number of items per page
+          example: 10
+          format: int32
+          type: integer
+        page:
+          description: Current page number
+          example: 0
+          format: int32
+          type: integer
+        error:
+          $ref: '#/components/schemas/Error'
+        data:
+          items:
+            type: object
+          type: array
+      type: object
+    Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    UserType:
+      enum:
+      - manager
+      - auditor
+      - trusted_auditor
+      - admin
+      example: manager
+      type: string
+    AssessmentType:
+      enum:
+      - Web
+      example: Web
+      type: string
+    AssessmentStatus:
+      enum:
+      - Open
+      example: Open
+      type: string
+    FindingType:
+      enum:
+      - Web
+      - Infra
+      - Mobile
+      - WiFi
+      example: Web
+      type: string
+    FindingStatus:
+      enum:
+      - Pending
+      example: Pending
+      type: string
+    Language:
+      enum:
+      - Spanish
+      - English
+      example: Spanish
+      type: string
+    Score:
+      enum:
+      - Info
+      - Low
+      - Medium
+      - High
+      - Critical
+      - NA
+      example: Low
+      type: string
+    OWASPMobileTop10Category:
+      enum:
+      - M1
+      example: M1
+      type: string
+    OWISAMCategory:
+      enum:
+      - DI-001
+      example: DI-001
+      type: string
+    OWASPCategory:
+      enum:
+      - OTG-INFO-001
+      example: OTG-INFO-001
+      type: string
+    FindingTemplate:
+      properties:
+        id:
+          example: 1
+          format: int32
+          type: integer
+        name:
+          example: xss-vulne-stored
+          maxLength: 64
+          type: string
+        type:
+          $ref: '#/components/schemas/FindingType'
+        owasp_category:
+          $ref: '#/components/schemas/OWASPCategory'
+        owasp_mobile_category:
+          $ref: '#/components/schemas/OWASPMobileTop10Category'
+        owisam_category:
+          $ref: '#/components/schemas/OWISAMCategory'
+        tech_risk:
+          $ref: '#/components/schemas/Score'
+        business_risk:
+          $ref: '#/components/schemas/Score'
+        exploitability:
+          $ref: '#/components/schemas/Score'
+        dissemination:
+          $ref: '#/components/schemas/Score'
+        solution_complexity:
+          $ref: '#/components/schemas/Score'
+        creator:
+          $ref: '#/components/schemas/User'
+      type: object
+    Finding:
+      type: object
+    Active:
+      type: object
+    Images:
+      type: object
+    Client:
+      example:
+        creator:
+          user_type: manager
+          username: username
+        short_name: ACME
+        long_name: ACME Global Corp Inc.
+        managers:
+        - user_type: manager
+          username: username
+        - user_type: manager
+          username: username
+      properties:
+        short_name:
+          example: ACME
+          maxLength: 64
+          type: string
+        long_name:
+          example: ACME Global Corp Inc.
+          maxLength: 128
+          type: string
+        creator:
+          $ref: '#/components/schemas/User'
+        managers:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+      required:
+      - long_name
+      - short_name
+      type: object
+    Template:
+      properties:
+        name:
+          example: MY TEMPLATE
+          maxLength: 25
+          type: string
+        description:
+          example: This is the template description
+          maxLength: 128
+          type: string
+      type: object
+    Assessment:
+      example:
+        creator:
+          user_type: manager
+          username: username
+        name: assessment-1
+        auditors:
+        - user_type: manager
+          username: username
+        - user_type: manager
+          username: username
+        client:
+          creator:
+            user_type: manager
+            username: username
+          short_name: ACME
+          long_name: ACME Global Corp Inc.
+          managers:
+          - user_type: manager
+            username: username
+          - user_type: manager
+            username: username
+        id: 1
+        creation_date: 2000-01-23T04:56:07.000+00:00
+        lang: Spanish
+        type: Web
+        platform: example.com
+        status: Open
+      properties:
+        id:
+          example: 1
+          format: int32
+          type: integer
+        name:
+          example: assessment-1
+          maxLength: 64
+          type: string
+        platform:
+          example: example.com
+          maxLength: 64
+          type: string
+        lang:
+          $ref: '#/components/schemas/Language'
+        type:
+          $ref: '#/components/schemas/AssessmentType'
+        status:
+          $ref: '#/components/schemas/AssessmentStatus'
+        client:
+          $ref: '#/components/schemas/Client'
+        creator:
+          $ref: '#/components/schemas/User'
+        auditors:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+        creation_date:
+          format: date-time
+          type: string
+      type: object
+    UserName:
+      example: username
+      maxLength: 128
+      type: string
+    User:
+      example:
+        user_type: manager
+        username: username
+      properties:
+        username:
+          example: username
+          maxLength: 128
+          type: string
+        user_type:
+          $ref: '#/components/schemas/UserType'
+      required:
+      - username
+      type: object
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: sarna.core.auth.bearer_token_info

@@ -115,3 +115,4 @@ yarn.lock
 volumes
 
 .swagger-codegen
+.openapi-generator

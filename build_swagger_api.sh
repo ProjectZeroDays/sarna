@@ -6,13 +6,13 @@ CODEGEN=${CODEGEN_DIR}/codegen-cli.jar
 
 if [[ ! -f ${CODEGEN} ]]; then
     mkdir -p ${CODEGEN_DIR}
-    wget http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.3.1/swagger-codegen-cli-2.3.1.jar \
+    wget http://central.maven.org/maven2/org/openapitools/openapi-generator-cli/3.3.3/openapi-generator-cli-3.3.3.jar \
         -O ${CODEGEN}
 fi
 
-java -jar ${CODEGEN} generate -c ${DIR}/config.json -o . -i ${DIR}/api.yaml -l python-flask
+java -jar ${CODEGEN} generate -c ${DIR}/config.json -o . -i ${DIR}/api.yaml --generator-name python-flask
 
-rsync -a --filter=':- .swagger-codegen-ignore' sarna.routes.api/* sarna/routes/api/
+rsync -a --filter=':- .openapi-generator-ignore' sarna.routes.api/* sarna/routes/api/
 
 rm -r sarna.routes.api
 rm -r .swagger-codegen

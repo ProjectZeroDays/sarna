@@ -23,5 +23,4 @@ from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop
 from sarna.routes.api.models.score import Score
 from sarna.routes.api.models.template import Template
 from sarna.routes.api.models.user import User
-from sarna.routes.api.models.user_name import UserName
 from sarna.routes.api.models.user_type import UserType

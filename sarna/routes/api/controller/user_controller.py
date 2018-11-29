@@ -1,5 +1,6 @@
 from sarna.model import User as UserORM
-from sarna.routes.api.models import PaginatedEnvelop, User
+from sarna.routes.api.models import User
+from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
 
 
 def get_users(page=None, page_size=None):  # noqa: E501
@@ -12,7 +13,7 @@ def get_users(page=None, page_size=None):  # noqa: E501
     :param page_size: Number of items returned
     :type page_size: int
 
-    :rtype: None
+    :rtype: PaginatedEnvelop
     """
     userss_query = UserORM.query.filter()
     total_count = userss_query.count()

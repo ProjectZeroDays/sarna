@@ -1,5 +1,6 @@
 from sarna.model import FindingTemplate as FindingTemplateORM
-from sarna.routes.api.models import FindingTemplate, PaginatedEnvelop
+from sarna.routes.api.models import FindingTemplate
+from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
 
 
 def get_findign_templates(page=None, page_size=None):  # noqa: E501
@@ -12,7 +13,7 @@ def get_findign_templates(page=None, page_size=None):  # noqa: E501
     :param page_size: Number of items returned
     :type page_size: int
 
-    :rtype: None
+    :rtype: PaginatedEnvelop
     """
 
     findings_query = FindingTemplateORM.query.filter()
