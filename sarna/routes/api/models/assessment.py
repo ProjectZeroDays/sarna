@@ -5,8 +5,13 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
+from sarna.routes.api.models.assessment_status import AssessmentStatus
+from sarna.routes.api.models.assessment_type import AssessmentType
 from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.client import Client
+from sarna.routes.api.models.language import Language
+from sarna.routes.api.models.user import User
 
 
 class Assessment(Model):
@@ -40,16 +45,16 @@ class Assessment(Model):
         :type creation_date: datetime
         """
         self.openapi_types = {
-            'id': 'int',
-            'name': 'str',
-            'platform': 'str',
-            'lang': 'Language',
-            'type': 'AssessmentType',
-            'status': 'AssessmentStatus',
-            'client': 'Client',
-            'creator': 'User',
-            'auditors': 'List[User]',
-            'creation_date': 'datetime'
+            'id': int,
+            'name': str,
+            'platform': str,
+            'lang': Language,
+            'type': AssessmentType,
+            'status': AssessmentStatus,
+            'client': Client,
+            'creator': User,
+            'auditors': List[User],
+            'creation_date': datetime
         }
 
         self.attribute_map = {

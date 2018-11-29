@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.error import Error
 
 
 class Envelop(Model):
@@ -24,8 +25,8 @@ class Envelop(Model):
         :type error: Error
         """
         self.openapi_types = {
-            'data': 'object',
-            'error': 'Error'
+            'data': object,
+            'error': Error
         }
 
         self.attribute_map = {

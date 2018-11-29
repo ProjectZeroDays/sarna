@@ -24,8 +24,8 @@ class Template(Model):
         :type description: str
         """
         self.openapi_types = {
-            'name': 'str',
-            'description': 'str'
+            'name': str,
+            'description': str
         }
 
         self.attribute_map = {

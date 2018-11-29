@@ -1,5 +1,5 @@
 from sarna.model import FindingTemplate as FindingTemplateORM
-from sarna.routes.api.models import FindingTemplate
+from sarna.routes.api.models.finding_template import FindingTemplate
 from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
 
 

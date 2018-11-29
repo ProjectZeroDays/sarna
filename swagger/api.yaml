@@ -207,8 +207,8 @@ paths:
                     data:
                       items:
                         $ref: '#/components/schemas/Template'
-  /client/{client_id}/template/{template_id}:
-    description: handle client templates
+  #TODO: Implement API
+  #/client/{client_id}/template/{template_id}:
   /assessment:
     get:
       tags:
@@ -280,18 +280,13 @@ paths:
                     data:
                       items:
                         $ref: '#/components/schemas/Finding'
-  /assessment/{assessment_id}/findig/{finding_id}:
-    description: handle assessment findings
-  /assessment/{assessment_id}/image:
-    description: TBD
-  /assessment/{assessment_id}/image/{image_id}:
-    description: TBD
-  /assessment/{assessment_id}/asset:
-    description: TBD
-  /assessment/{assessment_id}/asset/{asset_id}:
-    description: TBD
-  /assessment/{assessment_id}/asset/{asset_id}/resource:
-    description: TBD
+  #TODO: Implement API
+  #/assessment/{assessment_id}/findig/{finding_id}:
+  #/assessment/{assessment_id}/image:
+  #/assessment/{assessment_id}/image/{image_id}:
+  #/assessment/{assessment_id}/asset:
+  #/assessment/{assessment_id}/asset/{asset_id}:
+  #/assessment/{assessment_id}/asset/{asset_id}/resource:
   /findign:
     get:
       tags:
@@ -316,12 +311,10 @@ paths:
                     data:
                       items:
                         $ref: '#/components/schemas/FindingTemplate'
-  /finding/{finding_id}:
-    description: TBD
-  /finding/{finding_id}/solution:
-    description: TBD
-  /finding/{finding_id}/translation:
-    description: TBD
+  #TODO: Implement API
+  #/finding/{finding_id}:
+  #/finding/{finding_id}/solution:
+  #/finding/{finding_id}/translation:
   /user:
     get:
       tags:
@@ -346,8 +339,8 @@ paths:
                     data:
                       items:
                         $ref: '#/components/schemas/User'
-  /user/{user_id}:
-    description: TBD
+  #TODO: Implement API
+  #/user/{user_id}:
 
 components:
   parameters:

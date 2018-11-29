@@ -3,8 +3,9 @@ from flask import abort
 from sarna.core.auth import current_user
 from sarna.model import Assessment as AssessmentORM
 from sarna.model import Finding as FindingORM
-from sarna.routes.api.models import Assessment, Finding
+from sarna.routes.api.models.assessment import Assessment
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
+from sarna.routes.api.models.finding import Finding
 from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
 
 

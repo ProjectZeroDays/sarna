@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.error import Error
 
 
 class PaginatedEnvelop(Model):
@@ -30,11 +31,11 @@ class PaginatedEnvelop(Model):
         :type data: List[object]
         """
         self.openapi_types = {
-            'total': 'int',
-            'page_size': 'int',
-            'page': 'int',
-            'error': 'Error',
-            'data': 'List[object]'
+            'total': int,
+            'page_size': int,
+            'page': int,
+            'error': Error,
+            'data': List[object]
         }
 
         self.attribute_map = {

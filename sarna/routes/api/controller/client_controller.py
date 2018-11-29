@@ -139,6 +139,8 @@ def get_clients(page=None, page_size=None):  # noqa: E501
         ]
     )
 
+    return data.to_dict()
+
 
 def modify_client(client_id, client):  # noqa: E501
     """Modify client

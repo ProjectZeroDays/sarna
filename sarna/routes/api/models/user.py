@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.user_type import UserType
 
 
 class User(Model):
@@ -24,8 +25,8 @@ class User(Model):
         :type user_type: UserType
         """
         self.openapi_types = {
-            'username': 'str',
-            'user_type': 'UserType'
+            'username': str,
+            'user_type': UserType
         }
 
         self.attribute_map = {

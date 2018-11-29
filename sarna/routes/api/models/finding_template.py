@@ -7,6 +7,12 @@ from typing import List, Dict  # noqa: F401
 
 from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.finding_type import FindingType
+from sarna.routes.api.models.owasp_category import OWASPCategory
+from sarna.routes.api.models.owasp_mobile_top10_category import OWASPMobileTop10Category
+from sarna.routes.api.models.owisam_category import OWISAMCategory
+from sarna.routes.api.models.score import Score
+from sarna.routes.api.models.user import User
 
 
 class FindingTemplate(Model):
@@ -44,18 +50,18 @@ class FindingTemplate(Model):
         :type creator: User
         """
         self.openapi_types = {
-            'id': 'int',
-            'name': 'str',
-            'type': 'FindingType',
-            'owasp_category': 'OWASPCategory',
-            'owasp_mobile_category': 'OWASPMobileTop10Category',
-            'owisam_category': 'OWISAMCategory',
-            'tech_risk': 'Score',
-            'business_risk': 'Score',
-            'exploitability': 'Score',
-            'dissemination': 'Score',
-            'solution_complexity': 'Score',
-            'creator': 'User'
+            'id': int,
+            'name': str,
+            'type': FindingType,
+            'owasp_category': OWASPCategory,
+            'owasp_mobile_category': OWASPMobileTop10Category,
+            'owisam_category': OWISAMCategory,
+            'tech_risk': Score,
+            'business_risk': Score,
+            'exploitability': Score,
+            'dissemination': Score,
+            'solution_complexity': Score,
+            'creator': User
         }
 
         self.attribute_map = {

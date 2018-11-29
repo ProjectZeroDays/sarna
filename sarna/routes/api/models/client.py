@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from sarna.routes.api.models.base_model_ import Model
 from sarna.routes.api import util
+from sarna.routes.api.models.user import User
 
 
 class Client(Model):
@@ -28,10 +29,10 @@ class Client(Model):
         :type managers: List[User]
         """
         self.openapi_types = {
-            'short_name': 'str',
-            'long_name': 'str',
-            'creator': 'User',
-            'managers': 'List[User]'
+            'short_name': str,
+            'long_name': str,
+            'creator': User,
+            'managers': List[User]
         }
 
         self.attribute_map = {

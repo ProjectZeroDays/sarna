@@ -24,8 +24,8 @@ class Error(Model):
         :type message: str
         """
         self.openapi_types = {
-            'code': 'str',
-            'message': 'str'
+            'code': str,
+            'message': str
         }
 
         self.attribute_map = {
