@@ -165,11 +165,31 @@ paths:
       summary: "Create a new assessment for client"
       operationId: createAssessment
       parameters:
+      - name: client_id
+        in: path
+        description: Client ID
+        required: true
+        type: integer
+        format: int64
       - in: body
         name: client
         description: The assessment to create.
         schema:
           $ref: '#/definitions/Assessment'
+      responses:
+        404:
+          $ref: '#/responses/NotFound'
+        403:
+          $ref: '#/responses/Forbidden'
+        201:
+          description: "Client Assessment data"
+          schema:
+            allOf:
+            - $ref: '#/definitions/Envelop'
+            - type: object
+              properties:
+                data:
+                  $ref: '#/definitions/Assessment'
     get:
       tags:
         - client

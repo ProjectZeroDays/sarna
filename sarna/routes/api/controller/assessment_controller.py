@@ -44,7 +44,7 @@ def get_assessment_findingis(assessment_id, page=None, page_size=None):  # noqa:
 
     findings_query = FindingORM.query.filter_by(assessment_id=assessment_id)
     total_count = findings_query.count()
-    findingsOrm = findings_query.limit(page_size).offset(page_size*page)
+    findingsOrm = findings_query.limit(page_size).offset(page_size * page)
     data = PaginatedEnvelop(
         total=total_count,
         page_size=page_size,
