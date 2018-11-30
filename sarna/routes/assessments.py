@@ -42,8 +42,7 @@ def export(assessment_id):
         json.dumps(
             assessment.export_data(only_approved=False),
             indent=2,
-            sort_keys=True,
-            default=lambda x: x.to_dict()
+            sort_keys=True
         )
     )
     response.headers.set('Content-Type', 'application/json')
@@ -62,7 +61,7 @@ def edit(assessment_id):
     if request.form:
         form = AssessmentForm(request.form)
     else:
-        form = AssessmentForm(**assessment.to_dict(), auditors=assessment.auditors)
+        form = AssessmentForm(**assessment)
 
     form.auditors.choices = User.get_choices(User.user_type.in_(valid_auditors))
 
@@ -143,7 +142,7 @@ def edit_finding(assessment_id, finding_id):
 
     finding = Finding.query.filter_by(id=finding_id).one()
 
-    finding_dict = finding.to_dict()
+    finding_dict = finding.copy()
     finding_dict['affected_resources'] = "\r\n".join(r.uri for r in finding.affected_resources)
     form_data = request.form.to_dict() or finding_dict
     form = FindingEditForm(**form_data)

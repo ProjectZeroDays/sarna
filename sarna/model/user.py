@@ -77,7 +77,7 @@ class User(Base, db.Model):
             (Assessment.client_id.in_(map(lambda x: x.id, self.managed_clients))) |
             (Assessment.client_id.in_(map(lambda x: x.id, self.audited_clients))) |
             (Assessment.auditors.any(User.id == self.id))
-        ).all()
+        )
 
     """
     Check permissions methods

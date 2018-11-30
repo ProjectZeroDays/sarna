@@ -70,4 +70,17 @@ def get_assessments(page=None, page_size=None):  # noqa: E501
 
     :rtype: PaginatedEnvelop
     """
-    return 'do some magic!'
+
+    assessments_query = current_user.get_user_assessments()
+    total_count = assessments_query.count()
+    assessment_orm = assessments_query.limit(page_size).offset(page_size * page)
+    data = PaginatedEnvelop(
+        total=total_count,
+        page_size=page_size,
+        page=page,
+        data=[
+            Assessment.from_dict(f) for f in assessment_orm
+        ]
+    )
+
+    return data.to_dict()

@@ -95,7 +95,7 @@ def edit(client_id: int):
     if request.form:
         form = ClientForm(request.form)
     else:
-        form = ClientForm(**client.to_dict(), managers=client.managers, auditors=client.auditors)
+        form = ClientForm(**client)
 
     form.managers.choices = User.get_choices(User.user_type.in_(valid_managers))
     form.auditors.choices = User.get_choices(User.user_type.in_(valid_auditors))

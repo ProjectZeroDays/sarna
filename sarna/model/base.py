@@ -55,17 +55,34 @@ class Base(dict):
         setattr(self, key, None)
 
     def __iter__(self):
-        for attr in self.__mapper__.attrs.keys():
-            yield getattr(self, attr)
+        return iter(self.__mapper__.attrs.keys())
 
     def __contains__(self, item):
         return item in self.__mapper__.attrs.keys()
+
+    def keys(self):
+        return self.__mapper__.attrs.keys()
+
+    def values(self):
+        for attr in self.__mapper__.attrs.keys():
+            yield getattr(self, attr)
+
+    def items(self):
+        for attr in self.__mapper__.attrs.keys():
+            yield attr, getattr(self, attr)
 
     def __hash__(self):
         h = 0
         for k, v in self.items():
             h = h ^ hash(v)
         return h
+
+    def __repr__(self):
+        return "{{{}}}".format(
+            ",".join(
+                "{}: {}".format(k, v) for k, v in self.items()
+            )
+        )
 
     def delete(self, synchronize_session=False):
         self.query.delete(synchronize_session=synchronize_session)

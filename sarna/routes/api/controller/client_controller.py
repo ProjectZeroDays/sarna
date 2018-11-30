@@ -25,7 +25,21 @@ def create_assessment(client_id, assessment):  # noqa: E501
     """
     if connexion.request.is_json:
         assessment = Assessment.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+
+    if not assessment:
+        abort(400)
+
+    client_orm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
+    if not current_user.manages(client_orm):
+        abort(403)
+
+    assessment_orm = AssessmentORM(
+        client=client_orm,
+        creator=current_user,
+        **assessment.to_dict()
+    )
+
+    return Envelop(data=Assessment.from_dict(assessment_orm)).to_dict()
 
 
 def create_client(client):  # noqa: E501

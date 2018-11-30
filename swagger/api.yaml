@@ -137,7 +137,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Assessment'
+              $ref: '#/components/schemas/AssessmentCreate'
       responses:
         404:
           $ref: '#/components/responses/NotFound'
@@ -641,7 +641,7 @@ components:
           type: string
           maxLength: 128
       required:
-        - name
+      - name
 
     ## CLIENTS
     ##########
@@ -682,8 +682,7 @@ components:
 
     ## ASSESSMENT
     #############
-
-    Assessment:
+    AssessmentBase:
       type: object
       properties:
         id:
@@ -703,17 +702,29 @@ components:
           $ref: '#/components/schemas/AssessmentType'
         status:
           $ref: '#/components/schemas/AssessmentStatus'
-        client:
-          $ref: '#/components/schemas/Client'
-        creator:
-          $ref: '#/components/schemas/User'
-        auditors:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        creation_date:
-          type: string
-          format: date-time
+    AssessmentCreate:
+      allOf:
+      - $ref: '#/components/schemas/AssessmentBase'
+      - type: object
+        properties:
+          auditors:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserName'
+    Assessment:
+      allOf:
+      - $ref: '#/components/schemas/AssessmentBase'
+      - type: object
+          properties:
+            creator:
+              $ref: '#/components/schemas/User'
+            auditors:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+            creation_date:
+              type: string
+              format: date-time
 
     ## USERS
     ########

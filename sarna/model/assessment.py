@@ -126,7 +126,7 @@ class Assessment(Base, db.Model):
         return os.path.join(config.EVIDENCES_PATH, str(self.uuid))
 
     def export_data(self, only_approved=True):
-        assessment_data = self.to_dict()
+        assessment_data = self.copy()
 
         if only_approved:
             finding_status_valid = {FindingStatus.Confirmed, FindingStatus.Reviewed}
