@@ -1,11 +1,16 @@
+import os
+from uuid import uuid4
+
 import connexion
-from flask import abort
+from flask import abort, send_from_directory
+from sqlalchemy.exc import IntegrityError
 
 from sarna.core.auth import current_user
-from sarna.model import Assessment as AssessmentORM
+from sarna.model import Assessment as AssessmentORM, db
 from sarna.model import Client as ClientORM
+from sarna.model import Template as TemplateORM
 from sarna.model import User as UserORM
-from sarna.routes.api.models import ClientRequestBody
+from sarna.routes.api.models import ClientRequestBody, Template
 from sarna.routes.api.models.assessment import Assessment  # noqa: E501
 from sarna.routes.api.models.client import Client  # noqa: E501
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
@@ -22,7 +27,29 @@ def add_client_template(client_id):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+
+    client_orm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
+    if not current_user.manages(client_orm):
+        abort(403)
+
+    file = connexion.request.files['file']
+
+    template_data = Template.from_dict(connexion.request.get_data())
+
+    filename = "{}.{}".format(uuid4(), file.filename.split('.')[-1])
+
+    upload_path = client_orm.template_path()
+    if not os.path.exists(upload_path):
+        os.makedirs(upload_path)
+
+    try:
+        TemplateORM(client=client_orm, file=filename, **template_data.to_dict())
+        db.session.commit()
+        file.save(os.path.join(upload_path, filename))
+    except IntegrityError:
+        abort(403)
+
+    return '', 204
 
 
 def create_assessment(client_id, assessment_request_body):  # noqa: E501
@@ -81,7 +108,13 @@ def delete_client(client_id):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    client_orm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
+    if not current_user.manages(client_orm):
+        abort(403)
+
+    client_orm.delete()
+
+    return '', 204
 
 
 def delete_client_template(client_id, filename):  # noqa: E501
@@ -96,7 +129,17 @@ def delete_client_template(client_id, filename):  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    client_orm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
+    if not current_user.manages(client_orm):
+        abort(403)
+
+    template_orm: TemplateORM = TemplateORM.query.filter(client_id=client_id, name=filename).one()
+    template_file = os.path.join(client_orm.template_path(), template_orm.file)
+
+    os.unlink(template_file)
+    template_orm.delete()
+
+    return '', 204
 
 
 def get_client(client_id):  # noqa: E501
@@ -161,7 +204,18 @@ def get_client_template(client_id, filename):  # noqa: E501
 
     :rtype: file
     """
-    return 'do some magic!'
+    client_orm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
+    if not current_user.manages(client_orm):
+        abort(403)
+
+    template_orm: TemplateORM = TemplateORM.query.filter(client_id=client_id, name=filename).one()
+
+    return send_from_directory(
+        client_orm.template_path(),
+        template_orm.file,
+        as_attachment=True,
+        attachment_filename=template_orm.file_display_name
+    )
 
 
 def get_client_templates(client_id, page=None, page_size=None):  # noqa: E501
@@ -178,7 +232,25 @@ def get_client_templates(client_id, page=None, page_size=None):  # noqa: E501
 
     :rtype: PaginatedEnvelop
     """
-    return 'do some magic!'
+    client_orm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
+    if not current_user.manages(client_orm):
+        abort(403)
+
+    template_query: TemplateORM = TemplateORM.query.filter_by(client_id=client_id)
+
+    total_count = template_query.count()
+    templates_orm = template_query.limit(page_size).offset(page * page_size)
+
+    data = PaginatedEnvelop(
+        total=total_count,
+        page_size=page_size,
+        page=page,
+        data=[
+            Template.from_dict(t) for t in templates_orm
+        ]
+    )
+
+    return data.to_dict()
 
 
 def get_clients(page=None, page_size=None):  # noqa: E501

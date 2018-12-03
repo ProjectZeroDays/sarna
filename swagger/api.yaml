@@ -231,13 +231,17 @@ paths:
         content:
           multipart/form-data:
             schema:
-              allOf:
-              - $ref: '#/components/schemas/Template'
-              - type: object
-                properties:
-                  file:
-                    type: string
-                    format: binary
+              type: object
+                properrties:
+                  info[]:
+                    type: array
+                    itmes:
+                      $ref: '#/components/schemas/Template'
+                  file[]:
+                    type: array
+                    items:
+                      type: string
+                      format: binary
       responses:
         404:
           $ref: '#/components/responses/NotFound'
@@ -1025,6 +1029,8 @@ components:
               $ref: '#/components/schemas/User'
     Template:
       type: object
+      required:
+      - name
       properties:
         name:
           type: string

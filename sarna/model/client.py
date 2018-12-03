@@ -60,3 +60,7 @@ class Template(Base, db.Model):
 
     description = db.Column(db.String(128))
     file = db.Column(db.String(128), nullable=False)
+
+    @property
+    def file_display_name(self):
+        return "{}.{}".format(self.name, self.file.split('.')[-1])
