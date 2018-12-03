@@ -9,7 +9,6 @@ from sarna.routes.api.models.assessment import Assessment
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
 from sarna.routes.api.models.finding import Finding
 from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
-from sarna.routes.api import util
 
 
 def add_assessment_finding(assessment_id, finding_request_body):  # noqa: E501
@@ -164,6 +163,7 @@ def get_assessment_findingis(assessment_id, page=None, page_size=None):  # noqa:
         ]
     )
     return data.to_dict()
+
 
 def get_assessment_image(assessment_id, filename):  # noqa: E501
     """Download assessment image

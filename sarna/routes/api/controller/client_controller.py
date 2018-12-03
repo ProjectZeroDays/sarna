@@ -4,12 +4,13 @@ from flask import abort
 from sarna.core.auth import current_user
 from sarna.model import Assessment as AssessmentORM
 from sarna.model import Client as ClientORM
+from sarna.model import User as UserORM
 from sarna.routes.api.models import ClientRequestBody
 from sarna.routes.api.models.assessment import Assessment  # noqa: E501
 from sarna.routes.api.models.client import Client  # noqa: E501
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
 from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
-from sarna.model import User as UserORM
+
 
 def add_client_template(client_id):  # noqa: E501
     """Add template to client
