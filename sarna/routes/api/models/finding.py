@@ -12,15 +12,12 @@ class Finding(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, template=None, title=None, status=None, type=None, owasp_category=None, owasp_mobile_category=None, owisam_category=None, tech_risk=None, business_risk=None, exploitability=None, dissemination=None, solution_complexity=None, description=None, solution=None, definition=None, references=None, cvss_v3_vector=None):  # noqa: E501
+    def __init__(self, title=None, status=None, type=None, owasp_category=None, owasp_mobile_category=None,
+                 owisam_category=None, tech_risk=None, business_risk=None, exploitability=None, dissemination=None,
+                 solution_complexity=None, id=None, name=None, template=None, description=None, solution=None,
+                 definition=None, references=None, cvss_v3_vector=None):  # noqa: E501
         """Finding - a model defined in OpenAPI
 
-        :param id: The id of this Finding.  # noqa: E501
-        :type id: int
-        :param name: The name of this Finding.  # noqa: E501
-        :type name: str
-        :param template: The template of this Finding.  # noqa: E501
-        :type template: FindingTemplateResume
         :param title: The title of this Finding.  # noqa: E501
         :type title: str
         :param status: The status of this Finding.  # noqa: E501
@@ -43,6 +40,12 @@ class Finding(Model):
         :type dissemination: Score
         :param solution_complexity: The solution_complexity of this Finding.  # noqa: E501
         :type solution_complexity: Score
+        :param id: The id of this Finding.  # noqa: E501
+        :type id: int
+        :param name: The name of this Finding.  # noqa: E501
+        :type name: str
+        :param template: The template of this Finding.  # noqa: E501
+        :type template: FindingTemplateResume
         :param description: The description of this Finding.  # noqa: E501
         :type description: str
         :param solution: The solution of this Finding.  # noqa: E501
@@ -54,12 +57,14 @@ class Finding(Model):
         :param cvss_v3_vector: The cvss_v3_vector of this Finding.  # noqa: E501
         :type cvss_v3_vector: str
         """
-        from sarna.routes.api.models import FindingTemplateResume, FindingStatus, FindingType, OWASPCategory, \
-            OWASPMobileTop10Category, OWISAMCategory, Score
+        from sarna.routes.api.models import FindingTemplateResume
+        from sarna.routes.api.models import FindingStatus
+        from sarna.routes.api.models import FindingType
+        from sarna.routes.api.models import OWASPCategory
+        from sarna.routes.api.models import OWASPMobileTop10Category
+        from sarna.routes.api.models import OWISAMCategory
+        from sarna.routes.api.models import Score
         self.openapi_types = {
-            'id': int,
-            'name': str,
-            'template': FindingTemplateResume,
             'title': str,
             'status': FindingStatus,
             'type': FindingType,
@@ -71,6 +76,9 @@ class Finding(Model):
             'exploitability': Score,
             'dissemination': Score,
             'solution_complexity': Score,
+            'id': int,
+            'name': str,
+            'template': FindingTemplateResume,
             'description': str,
             'solution': str,
             'definition': str,
@@ -79,9 +87,6 @@ class Finding(Model):
         }
 
         self.attribute_map = {
-            'id': 'id',
-            'name': 'name',
-            'template': 'template',
             'title': 'title',
             'status': 'status',
             'type': 'type',
@@ -93,6 +98,9 @@ class Finding(Model):
             'exploitability': 'exploitability',
             'dissemination': 'dissemination',
             'solution_complexity': 'solution_complexity',
+            'id': 'id',
+            'name': 'name',
+            'template': 'template',
             'description': 'description',
             'solution': 'solution',
             'definition': 'definition',
@@ -100,9 +108,6 @@ class Finding(Model):
             'cvss_v3_vector': 'cvss_v3_vector'
         }
 
-        self._id = id
-        self._name = name
-        self._template = template
         self._title = title
         self._status = status
         self._type = type
@@ -114,6 +119,9 @@ class Finding(Model):
         self._exploitability = exploitability
         self._dissemination = dissemination
         self._solution_complexity = solution_complexity
+        self._id = id
+        self._name = name
+        self._template = template
         self._description = description
         self._solution = solution
         self._definition = definition
@@ -130,71 +138,6 @@ class Finding(Model):
         :rtype: Finding
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def id(self):
-        """Gets the id of this Finding.
-
-
-        :return: The id of this Finding.
-        :rtype: int
-        """
-        return self._id
-
-    @id.setter
-    def id(self, id):
-        """Sets the id of this Finding.
-
-
-        :param id: The id of this Finding.
-        :type id: int
-        """
-
-        self._id = id
-
-    @property
-    def name(self):
-        """Gets the name of this Finding.
-
-
-        :return: The name of this Finding.
-        :rtype: str
-        """
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        """Sets the name of this Finding.
-
-
-        :param name: The name of this Finding.
-        :type name: str
-        """
-        if name is not None and len(name) > 60:
-            raise ValueError("Invalid value for `name`, length must be less than or equal to `60`")  # noqa: E501
-
-        self._name = name
-
-    @property
-    def template(self):
-        """Gets the template of this Finding.
-
-
-        :return: The template of this Finding.
-        :rtype: FindingTemplateResume
-        """
-        return self._template
-
-    @template.setter
-    def template(self, template):
-        """Sets the template of this Finding.
-
-
-        :param template: The template of this Finding.
-        :type template: FindingTemplateResume
-        """
-
-        self._template = template
 
     @property
     def title(self):
@@ -430,6 +373,71 @@ class Finding(Model):
         self._solution_complexity = solution_complexity
 
     @property
+    def id(self):
+        """Gets the id of this Finding.
+
+
+        :return: The id of this Finding.
+        :rtype: int
+        """
+        return self._id
+
+    @id.setter
+    def id(self, id):
+        """Sets the id of this Finding.
+
+
+        :param id: The id of this Finding.
+        :type id: int
+        """
+
+        self._id = id
+
+    @property
+    def name(self):
+        """Gets the name of this Finding.
+
+
+        :return: The name of this Finding.
+        :rtype: str
+        """
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        """Sets the name of this Finding.
+
+
+        :param name: The name of this Finding.
+        :type name: str
+        """
+        if name is not None and len(name) > 60:
+            raise ValueError("Invalid value for `name`, length must be less than or equal to `60`")  # noqa: E501
+
+        self._name = name
+
+    @property
+    def template(self):
+        """Gets the template of this Finding.
+
+
+        :return: The template of this Finding.
+        :rtype: FindingTemplateResume
+        """
+        return self._template
+
+    @template.setter
+    def template(self, template):
+        """Sets the template of this Finding.
+
+
+        :param template: The template of this Finding.
+        :type template: FindingTemplateResume
+        """
+
+        self._template = template
+
+    @property
     def description(self):
         """Gets the description of this Finding.
 
@@ -532,6 +540,7 @@ class Finding(Model):
         :type cvss_v3_vector: str
         """
         if cvss_v3_vector is not None and len(cvss_v3_vector) > 128:
-            raise ValueError("Invalid value for `cvss_v3_vector`, length must be less than or equal to `128`")  # noqa: E501
+            raise ValueError(
+                "Invalid value for `cvss_v3_vector`, length must be less than or equal to `128`")  # noqa: E501
 
         self._cvss_v3_vector = cvss_v3_vector

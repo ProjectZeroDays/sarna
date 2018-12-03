@@ -4,29 +4,42 @@ from flask import abort
 from sarna.core.auth import current_user
 from sarna.model import Assessment as AssessmentORM
 from sarna.model import Client as ClientORM
-from sarna.model import User as UserORM
+from sarna.routes.api.models import ClientRequestBody
 from sarna.routes.api.models.assessment import Assessment  # noqa: E501
 from sarna.routes.api.models.client import Client  # noqa: E501
 from sarna.routes.api.models.envelop import Envelop  # noqa: E501
 from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
+from sarna.model import User as UserORM
+
+def add_client_template(client_id):  # noqa: E501
+    """Add template to client
+
+     # noqa: E501
+
+    :param client_id: Client ID
+    :type client_id: int
+
+    :rtype: None
+    """
+    return 'do some magic!'
 
 
-def create_assessment(client_id, assessment):  # noqa: E501
+def create_assessment(client_id, assessment_request_body):  # noqa: E501
     """Create a new assessment for client
 
      # noqa: E501
 
     :param client_id: Client ID
     :type client_id: int
-    :param assessment: The assessment to create.
-    :type assessment: dict | bytes
+    :param assessment_request_body: The assessment to create.
+    :type assessment_request_body: dict | bytes
 
     :rtype: Envelop
     """
     if connexion.request.is_json:
-        assessment = Assessment.from_dict(connexion.request.get_json())  # noqa: E501
+        assessment_request_body = Assessment.from_dict(connexion.request.get_json())  # noqa: E501
 
-    if not assessment:
+    if not assessment_request_body:
         abort(400)
 
     client_orm: ClientORM = ClientORM.query.filter_by(id=client_id).one()
@@ -36,24 +49,52 @@ def create_assessment(client_id, assessment):  # noqa: E501
     assessment_orm = AssessmentORM(
         client=client_orm,
         creator=current_user,
-        **assessment.to_dict()
+        **assessment_request_body.to_dict()
     )
 
     return Envelop(data=Assessment.from_dict(assessment_orm)).to_dict()
 
 
-def create_client(client):  # noqa: E501
+def create_client(client_request_body):  # noqa: E501
     """Create a new client
 
      # noqa: E501
 
-    :param client: The client to create.
-    :type client: dict | bytes
+    :param client_request_body: The client to create.
+    :type client_request_body: dict | bytes
 
     :rtype: Envelop
     """
     if connexion.request.is_json:
-        client = Client.from_dict(connexion.request.get_json())  # noqa: E501
+        client_request_body = ClientRequestBody.from_dict(connexion.request.get_json())  # noqa: E501
+    return 'do some magic!'
+
+
+def delete_client(client_id):  # noqa: E501
+    """Delete client
+
+     # noqa: E501
+
+    :param client_id: Client ID
+    :type client_id: int
+
+    :rtype: None
+    """
+    return 'do some magic!'
+
+
+def delete_client_template(client_id, filename):  # noqa: E501
+    """Delete template from client
+
+     # noqa: E501
+
+    :param client_id: Client ID
+    :type client_id: int
+    :param filename: Filename
+    :type filename: str
+
+    :rtype: None
+    """
     return 'do some magic!'
 
 
@@ -107,6 +148,21 @@ def get_client_assessments(client_id, page=None, page_size=None):  # noqa: E501
     return data.to_dict()
 
 
+def get_client_template(client_id, filename):  # noqa: E501
+    """Download Client template
+
+     # noqa: E501
+
+    :param client_id: Client ID
+    :type client_id: int
+    :param filename: Filename
+    :type filename: str
+
+    :rtype: file
+    """
+    return 'do some magic!'
+
+
 def get_client_templates(client_id, page=None, page_size=None):  # noqa: E501
     """Get list of assessment of the client
 
@@ -156,18 +212,18 @@ def get_clients(page=None, page_size=None):  # noqa: E501
     return data.to_dict()
 
 
-def modify_client(client_id, client):  # noqa: E501
+def modify_client(client_id, client_request_body):  # noqa: E501
     """Modify client
 
      # noqa: E501
 
     :param client_id: Client ID
     :type client_id: int
-    :param client: The client to create.
-    :type client: dict | bytes
+    :param client_request_body: The client to create.
+    :type client_request_body: dict | bytes
 
     :rtype: None
     """
     if connexion.request.is_json:
-        client = Client.from_dict(connexion.request.get_json())  # noqa: E501
+        client_request_body = ClientRequestBody.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'

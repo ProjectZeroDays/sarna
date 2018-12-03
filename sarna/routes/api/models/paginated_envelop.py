@@ -6,7 +6,6 @@ from typing import List  # noqa: F401
 
 from sarna.routes.api import util
 from sarna.routes.api.models.base_model_ import Model
-from sarna.routes.api.models.error import Error
 
 
 class PaginatedEnvelop(Model):
@@ -29,6 +28,7 @@ class PaginatedEnvelop(Model):
         :param data: The data of this PaginatedEnvelop.  # noqa: E501
         :type data: List[object]
         """
+        from sarna.routes.api.models import Error
         self.openapi_types = {
             'total': int,
             'page_size': int,

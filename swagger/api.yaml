@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
   title: "SARNA API"
   version: "1.0.0"
@@ -38,7 +38,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Client'
+              $ref: '#/components/schemas/ClientRequestBody'
       responses:
         403:
           $ref: '#/components/responses/Forbidden'
@@ -59,10 +59,8 @@ paths:
       summary: "Get a list of clients"
       operationId: getClients
       parameters:
-      - in: query
-        $ref: '#/components/parameters/page'
-      - in: query
-        $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/page_size'
       responses:
         200:
           description: "List of clients"
@@ -91,7 +89,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Client'
+              $ref: '#/components/schemas/ClientRequestBody'
       responses:
         404:
           $ref: '#/components/responses/NotFound'
@@ -122,6 +120,21 @@ paths:
                   properties:
                     data:
                       $ref: '#/components/schemas/Client'
+    delete:
+      tags:
+      - client
+      summary: Delete client
+      operationId: deleteClient
+      parameters:
+      - $ref: '#/components/parameters/client_id'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        204:
+          $ref: '#/components/responses/NoContent'
+
   /client/{client_id}/assessment:
     post:
       tags:
@@ -137,7 +150,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AssessmentCreate'
+              $ref: '#/components/schemas/AssessmentRequestBody'
       responses:
         404:
           $ref: '#/components/responses/NotFound'
@@ -207,8 +220,68 @@ paths:
                     data:
                       items:
                         $ref: '#/components/schemas/Template'
-  #TODO: Implement API
-  #/client/{client_id}/template/{template_id}:
+    post:
+      tags:
+      - client
+      summary: Add template to client
+      operationId: addClientTemplate
+      parameters:
+      - $ref: '#/components/parameters/client_id'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Template'
+              - type: object
+                properties:
+                  file:
+                    type: string
+                    format: binary
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        204:
+          $ref: '#/components/responses/NoContent'
+  /client/{client_id}/template/{filename}:
+    get:
+      tags:
+      - client
+      summary: Download Client template
+      operationId: getClientTemplate
+      parameters:
+      - $ref: '#/components/parameters/client_id'
+      - $ref: '#/components/parameters/filename'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        200:
+          description: File data
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+    delete:
+      tags:
+      - client
+      summary: Delete template from client
+      operationId: deleteClientTemplate
+      parameters:
+      - $ref: '#/components/parameters/client_id'
+      - $ref: '#/components/parameters/filename'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        204:
+          $ref: '#/components/responses/NoContent'
+
   /assessment:
     get:
       tags:
@@ -216,10 +289,8 @@ paths:
       summary: "Get a list of assessments"
       operationId: getAssessments
       parameters:
-      - in: query
-        $ref: '#/components/parameters/page'
-      - in: query
-        $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/page_size'
       responses:
         200:
           description: "List of assessments"
@@ -257,7 +328,51 @@ paths:
                   properties:
                     data:
                       $ref: '#/components/schemas/Assessment'
+    delete:
+      tags:
+      - assessment
+      summary: Delete Assessment
+      operationId: deleteAssessment
+      parameters:
+      - $ref: '#/components/parameters/assessment_id'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        204:
+          $ref: '#/components/responses/NoContent'
   /assessment/{assessment_id}/findig:
+    post:
+      tags:
+      - assessment
+      summary: "Add a new finding to the assessment"
+      operationId: addAssessmentFinding
+      parameters:
+      - $ref: '#/components/parameters/assessment_id'
+      requestBody:
+        description: The finding to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindingRequestBody'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        201:
+          description: "Finding data"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Envelop'
+                - type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Finding'
     get:
       tags:
       - assessment
@@ -280,10 +395,140 @@ paths:
                     data:
                       items:
                         $ref: '#/components/schemas/Finding'
-  #TODO: Implement API
-  #/assessment/{assessment_id}/findig/{finding_id}:
-  #/assessment/{assessment_id}/image:
-  #/assessment/{assessment_id}/image/{image_id}:
+  /assessment/{assessment_id}/findig/{finding_id}:
+    delete:
+      tags:
+      - assessment
+      summary: Delete Assessment Finding
+      operationId: deleteAssessmentFinding
+      parameters:
+      - $ref: '#/components/parameters/assessment_id'
+      - $ref: '#/components/parameters/finding_id'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        204:
+          $ref: '#/components/responses/NoContent'
+    patch:
+      tags:
+      - assessment
+      summary: "Edit finding in the assessment"
+      operationId: editAssessmentFinding
+      parameters:
+      - $ref: '#/components/parameters/assessment_id'
+      - $ref: '#/components/parameters/finding_id'
+      requestBody:
+        description: The finding to be edited.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindingRequestBody'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        200:
+          description: "Finding data"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Envelop'
+                - type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Finding'
+  /assessment/{assessment_id}/image:
+    get:
+      tags:
+      - assessment
+      summary: Get list of images
+      operationId: getAssessmentImages
+      parameters:
+      - $ref: '#/components/parameters/assessment_id'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        200:
+          description: "List of Images"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/PaginatedEnvelop'
+                - type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Image'
+    post:
+      tags:
+      - assessment
+      summary: Add evidence to assessment
+      operationId: addAssessmentImage
+      parameters:
+      - $ref: '#/components/parameters/assessment_id'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Image'
+              - type: object
+                properties:
+                  file:
+                    type: string
+                    format: binary
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        204:
+          $ref: '#/components/responses/NoContent'
+  /assessment/{assessment_id}/image/{filename}:
+    get:
+      tags:
+      - assessment
+      summary: Download assessment image
+      operationId: getAssessmentImage
+      parameters:
+      - $ref: '#/components/parameters/assessment_id'
+      - $ref: '#/components/parameters/filename'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        200:
+          description: File data
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+    delete:
+      tags:
+      - assessment
+      summary: Delete Assessment image
+      operationId: deleteAssessmentImage
+      parameters:
+      - $ref: '#/components/parameters/assessment_id'
+      - $ref: '#/components/parameters/filename'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        204:
+          $ref: '#/components/responses/NoContent'
   #/assessment/{assessment_id}/asset:
   #/assessment/{assessment_id}/asset/{asset_id}:
   #/assessment/{assessment_id}/asset/{asset_id}/resource:
@@ -311,10 +556,27 @@ paths:
                     data:
                       items:
                         $ref: '#/components/schemas/FindingTemplate'
+
+  /finding/{finding_id}:
+    delete:
+      tags:
+      - assessment
+      summary: Delete Finding Template
+      operationId: deleteFindingTemplate
+      parameters:
+      - $ref: '#/components/parameters/finding_id'
+      responses:
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        204:
+          $ref: '#/components/responses/NoContent'
   #TODO: Implement API
-  #/finding/{finding_id}:
   #/finding/{finding_id}/solution:
+  #/finding/{finding_id}/solution/{solution_name}:
   #/finding/{finding_id}/translation:
+  #/finding/{finding_id}/translation/{lang}:
   /user:
     get:
       tags:
@@ -340,12 +602,19 @@ paths:
                       items:
                         $ref: '#/components/schemas/User'
   #TODO: Implement API
-  #/user/{user_id}:
+  #/user/{username}:
 
 components:
   parameters:
-    user_id:
-      name: user_id
+    filename:
+      name: filename
+      in: path
+      description: Filename
+      required: true
+      schema:
+        type: string
+    username:
+      name: username
       in: path
       description: User ID
       required: true
@@ -390,13 +659,6 @@ components:
         type: integer
         minimum: 0
         default: 0
-
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      x-bearerInfoFunc: sarna.core.auth.bearer_token_info
-
   responses:
     NotFound:
       description: The specified resource was not found
@@ -412,7 +674,24 @@ components:
             $ref: '#/components/schemas/Envelop'
     NoContent:
       description: No Content
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      x-bearerInfoFunc: sarna.core.auth.bearer_token_info
+
   schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - message
+
     Envelop:
       type: object
       properties:
@@ -441,16 +720,7 @@ components:
           type: array
           items:
             type: object
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      required:
-      - code
-      - message
+
     ## ENUMS
     ########
     UserType:
@@ -513,58 +783,104 @@ components:
 
     ## FINDING TEMPLATES
     ####################
-    FindingTemplate:
+    FindingTemplateBase:
       type: object
+      required:
+      - name
       properties:
-        id:
-          type: integer
-          example: 1
         name:
           type: string
           example: "xss-vulne-stored"
           maxLength: 64
-        type:
-          $ref: '#/components/schemas/FindingType'
-        owasp_category:
-          $ref: '#/components/schemas/OWASPCategory'
-        owasp_mobile_category:
-          $ref: '#/components/schemas/OWASPMobileTop10Category'
-        owisam_category:
-          $ref: '#/components/schemas/OWISAMCategory'
-        tech_risk:
-          $ref: '#/components/schemas/Score'
-        business_risk:
-          $ref: '#/components/schemas/Score'
-        exploitability:
-          $ref: '#/components/schemas/Score'
-        dissemination:
-          $ref: '#/components/schemas/Score'
-        solution_complexity:
-          $ref: '#/components/schemas/Score'
-        creator:
-          $ref: '#/components/schemas/User'
     FindingTemplateResume:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-        name:
-          type: string
-          example: "xss-vulne-stored"
-          maxLength: 64
+      allOf:
+      - $ref: '#/components/schemas/FindingTemplateBase'
+      - type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+    FindingTemplateCreate:
+      allOf:
+      - $ref: '#/components/schemas/FindingTemplateBase'
+      - type: object
+        required:
+        - type
+        - tech_risk
+        - business_risk
+        - exploitability
+        - dissemination
+        - solution_complexity
+        - lang
+        - title
+        - definition
+        - references
+        properties:
+          type:
+            $ref: '#/components/schemas/FindingType'
+          owasp_category:
+            $ref: '#/components/schemas/OWASPCategory'
+          owasp_mobile_category:
+            $ref: '#/components/schemas/OWASPMobileTop10Category'
+          owisam_category:
+            $ref: '#/components/schemas/OWISAMCategory'
+          tech_risk:
+            $ref: '#/components/schemas/Score'
+          business_risk:
+            $ref: '#/components/schemas/Score'
+          exploitability:
+            $ref: '#/components/schemas/Score'
+          dissemination:
+            $ref: '#/components/schemas/Score'
+          solution_complexity:
+            $ref: '#/components/schemas/Score'
+          lang:
+            $ref: '#/components/schemas/Language'
+          title:
+            type: string
+            maxLength: 128
+          definition:
+            type: string
+          references:
+            type: string
+          description:
+            type: string
+    FindingTemplate:
+      allOf:
+      - $ref: '#/components/schemas/FindingTemplateBase'
+      - type: object
+        required:
+        - type
+        - tech_risk
+        - business_risk
+        - exploitability
+        - dissemination
+        - solution_complexity
+        properties:
+          type:
+            $ref: '#/components/schemas/FindingType'
+          owasp_category:
+            $ref: '#/components/schemas/OWASPCategory'
+          owasp_mobile_category:
+            $ref: '#/components/schemas/OWASPMobileTop10Category'
+          owisam_category:
+            $ref: '#/components/schemas/OWISAMCategory'
+          tech_risk:
+            $ref: '#/components/schemas/Score'
+          business_risk:
+            $ref: '#/components/schemas/Score'
+          exploitability:
+            $ref: '#/components/schemas/Score'
+          dissemination:
+            $ref: '#/components/schemas/Score'
+          solution_complexity:
+            $ref: '#/components/schemas/Score'
+          creator:
+            $ref: '#/components/schemas/User'
 
-    Finding:
+    FindingBase:
       type: object
       properties:
-        id:
-          type: integer
-          example: 1
-        name:
-          type: string
-          maxLength: 60
-        template:
-          $ref: '#/components/schemas/FindingTemplateResume'
         title:
           type: string
           maxLength: 128
@@ -589,19 +905,6 @@ components:
         solution_complexity:
           $ref: '#/components/schemas/Score'
 
-        description:
-          type: string
-        solution:
-          type: string
-        definition:
-          type: string
-        references:
-          type: string
-
-        cvss_v3_vector:
-          type: string
-          maxLength: 128
-
     FindingResume:
       type: object
       properties:
@@ -614,6 +917,42 @@ components:
         title:
           type: string
           maxLength: 128
+
+    FindingRequestBody:
+      allOf:
+      - $ref: '#/components/schemas/FindingBase'
+      - type: object
+        properties:
+          template:
+            type: string
+            example: "xss-vulne-stored"
+            maxLength: 64
+
+    Finding:
+      allOf:
+      - $ref: '#/components/schemas/FindingBase'
+      - type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          name:
+            type: string
+            maxLength: 60
+          template:
+            $ref: '#/components/schemas/FindingTemplateResume'
+          description:
+            type: string
+          solution:
+            type: string
+          definition:
+            type: string
+          references:
+            type: string
+
+          cvss_v3_vector:
+            type: string
+            maxLength: 128
 
     AffectedResource:
       type: object
@@ -634,7 +973,7 @@ components:
           items:
             $ref: '#/components/schemas/AffectedResource'
 
-    Images:
+    Image:
       type: object
       properties:
         name:
@@ -645,15 +984,12 @@ components:
 
     ## CLIENTS
     ##########
-    Client:
+    ClientBase:
       type: object
       required:
       - short_name
       - long_name
       properties:
-        id:
-          type: integer
-          example: 1
         short_name:
           type: string
           example: "ACME"
@@ -662,12 +998,31 @@ components:
           type: string
           example: "ACME Global Corp Inc."
           maxLength: 128
-        creator:
-          $ref: '#/components/schemas/User'
-        managers:
-          type: array
-          items:
+    ClientRequestBody:
+      allOf:
+      - $ref: '#/components/schemas/ClientBase'
+      - type: object
+        properties:
+          managers:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserName'
+    Client:
+      allOf:
+      - $ref: '#/components/schemas/ClientBase'
+      - type: object
+        required:
+        - id
+        properties:
+          id:
+            type: integer
+            example: 1
+          creator:
             $ref: '#/components/schemas/User'
+          managers:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
     Template:
       type: object
       properties:
@@ -685,9 +1040,6 @@ components:
     AssessmentBase:
       type: object
       properties:
-        id:
-          type: integer
-          example: 1
         name:
           type: string
           example: "assessment-1"
@@ -702,7 +1054,7 @@ components:
           $ref: '#/components/schemas/AssessmentType'
         status:
           $ref: '#/components/schemas/AssessmentStatus'
-    AssessmentCreate:
+    AssessmentRequestBody:
       allOf:
       - $ref: '#/components/schemas/AssessmentBase'
       - type: object
@@ -715,16 +1067,19 @@ components:
       allOf:
       - $ref: '#/components/schemas/AssessmentBase'
       - type: object
-          properties:
-            creator:
+        properties:
+          id:
+            type: integer
+            example: 1
+          creator:
+            $ref: '#/components/schemas/User'
+          auditors:
+            type: array
+            items:
               $ref: '#/components/schemas/User'
-            auditors:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-            creation_date:
-              type: string
-              format: date-time
+          creation_date:
+            type: string
+            format: date-time
 
     ## USERS
     ########

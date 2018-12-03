@@ -12,11 +12,11 @@ class FindingTemplate(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, type=None, owasp_category=None, owasp_mobile_category=None, owisam_category=None, tech_risk=None, business_risk=None, exploitability=None, dissemination=None, solution_complexity=None, creator=None):  # noqa: E501
+    def __init__(self, name=None, type=None, owasp_category=None, owasp_mobile_category=None, owisam_category=None,
+                 tech_risk=None, business_risk=None, exploitability=None, dissemination=None, solution_complexity=None,
+                 creator=None):  # noqa: E501
         """FindingTemplate - a model defined in OpenAPI
 
-        :param id: The id of this FindingTemplate.  # noqa: E501
-        :type id: int
         :param name: The name of this FindingTemplate.  # noqa: E501
         :type name: str
         :param type: The type of this FindingTemplate.  # noqa: E501
@@ -40,10 +40,13 @@ class FindingTemplate(Model):
         :param creator: The creator of this FindingTemplate.  # noqa: E501
         :type creator: User
         """
-        from sarna.routes.api.models import FindingType, OWASPCategory, OWASPMobileTop10Category, OWISAMCategory, Score, \
-            User
+        from sarna.routes.api.models import FindingType
+        from sarna.routes.api.models import OWASPCategory
+        from sarna.routes.api.models import OWASPMobileTop10Category
+        from sarna.routes.api.models import OWISAMCategory
+        from sarna.routes.api.models import Score
+        from sarna.routes.api.models import User
         self.openapi_types = {
-            'id': int,
             'name': str,
             'type': FindingType,
             'owasp_category': OWASPCategory,
@@ -58,7 +61,6 @@ class FindingTemplate(Model):
         }
 
         self.attribute_map = {
-            'id': 'id',
             'name': 'name',
             'type': 'type',
             'owasp_category': 'owasp_category',
@@ -72,7 +74,6 @@ class FindingTemplate(Model):
             'creator': 'creator'
         }
 
-        self._id = id
         self._name = name
         self._type = type
         self._owasp_category = owasp_category
@@ -97,27 +98,6 @@ class FindingTemplate(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self):
-        """Gets the id of this FindingTemplate.
-
-
-        :return: The id of this FindingTemplate.
-        :rtype: int
-        """
-        return self._id
-
-    @id.setter
-    def id(self, id):
-        """Sets the id of this FindingTemplate.
-
-
-        :param id: The id of this FindingTemplate.
-        :type id: int
-        """
-
-        self._id = id
-
-    @property
     def name(self):
         """Gets the name of this FindingTemplate.
 
@@ -135,6 +115,8 @@ class FindingTemplate(Model):
         :param name: The name of this FindingTemplate.
         :type name: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
         if name is not None and len(name) > 64:
             raise ValueError("Invalid value for `name`, length must be less than or equal to `64`")  # noqa: E501
 
@@ -158,6 +140,8 @@ class FindingTemplate(Model):
         :param type: The type of this FindingTemplate.
         :type type: FindingType
         """
+        if type is None:
+            raise ValueError("Invalid value for `type`, must not be `None`")  # noqa: E501
 
         self._type = type
 
@@ -242,6 +226,8 @@ class FindingTemplate(Model):
         :param tech_risk: The tech_risk of this FindingTemplate.
         :type tech_risk: Score
         """
+        if tech_risk is None:
+            raise ValueError("Invalid value for `tech_risk`, must not be `None`")  # noqa: E501
 
         self._tech_risk = tech_risk
 
@@ -263,6 +249,8 @@ class FindingTemplate(Model):
         :param business_risk: The business_risk of this FindingTemplate.
         :type business_risk: Score
         """
+        if business_risk is None:
+            raise ValueError("Invalid value for `business_risk`, must not be `None`")  # noqa: E501
 
         self._business_risk = business_risk
 
@@ -284,6 +272,8 @@ class FindingTemplate(Model):
         :param exploitability: The exploitability of this FindingTemplate.
         :type exploitability: Score
         """
+        if exploitability is None:
+            raise ValueError("Invalid value for `exploitability`, must not be `None`")  # noqa: E501
 
         self._exploitability = exploitability
 
@@ -305,6 +295,8 @@ class FindingTemplate(Model):
         :param dissemination: The dissemination of this FindingTemplate.
         :type dissemination: Score
         """
+        if dissemination is None:
+            raise ValueError("Invalid value for `dissemination`, must not be `None`")  # noqa: E501
 
         self._dissemination = dissemination
 
@@ -326,6 +318,8 @@ class FindingTemplate(Model):
         :param solution_complexity: The solution_complexity of this FindingTemplate.
         :type solution_complexity: Score
         """
+        if solution_complexity is None:
+            raise ValueError("Invalid value for `solution_complexity`, must not be `None`")  # noqa: E501
 
         self._solution_complexity = solution_complexity
 

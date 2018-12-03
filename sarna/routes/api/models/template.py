@@ -86,6 +86,7 @@ class Template(Model):
         :type description: str
         """
         if description is not None and len(description) > 128:
-            raise ValueError("Invalid value for `description`, length must be less than or equal to `128`")  # noqa: E501
+            raise ValueError(
+                "Invalid value for `description`, length must be less than or equal to `128`")  # noqa: E501
 
         self._description = description

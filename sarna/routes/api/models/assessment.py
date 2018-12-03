@@ -6,12 +6,7 @@ from datetime import datetime  # noqa: F401
 from typing import List  # noqa: F401
 
 from sarna.routes.api import util
-from sarna.routes.api.models.assessment_status import AssessmentStatus
-from sarna.routes.api.models.assessment_type import AssessmentType
 from sarna.routes.api.models.base_model_ import Model
-from sarna.routes.api.models.client import Client
-from sarna.routes.api.models.language import Language
-from sarna.routes.api.models.user import User
 
 
 class Assessment(Model):
@@ -20,11 +15,10 @@ class Assessment(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, platform=None, lang=None, type=None, status=None, client=None, creator=None, auditors=None, creation_date=None):  # noqa: E501
+    def __init__(self, name=None, platform=None, lang=None, type=None, status=None, id=None, creator=None,
+                 auditors=None, creation_date=None):  # noqa: E501
         """Assessment - a model defined in OpenAPI
 
-        :param id: The id of this Assessment.  # noqa: E501
-        :type id: int
         :param name: The name of this Assessment.  # noqa: E501
         :type name: str
         :param platform: The platform of this Assessment.  # noqa: E501
@@ -35,8 +29,8 @@ class Assessment(Model):
         :type type: AssessmentType
         :param status: The status of this Assessment.  # noqa: E501
         :type status: AssessmentStatus
-        :param client: The client of this Assessment.  # noqa: E501
-        :type client: Client
+        :param id: The id of this Assessment.  # noqa: E501
+        :type id: int
         :param creator: The creator of this Assessment.  # noqa: E501
         :type creator: User
         :param auditors: The auditors of this Assessment.  # noqa: E501
@@ -44,39 +38,40 @@ class Assessment(Model):
         :param creation_date: The creation_date of this Assessment.  # noqa: E501
         :type creation_date: datetime
         """
+        from sarna.routes.api.models import Language
+        from sarna.routes.api.models import AssessmentType
+        from sarna.routes.api.models import AssessmentStatus
+        from sarna.routes.api.models import User
         self.openapi_types = {
-            'id': int,
             'name': str,
             'platform': str,
             'lang': Language,
             'type': AssessmentType,
             'status': AssessmentStatus,
-            'client': Client,
+            'id': int,
             'creator': User,
             'auditors': List[User],
             'creation_date': datetime
         }
 
         self.attribute_map = {
-            'id': 'id',
             'name': 'name',
             'platform': 'platform',
             'lang': 'lang',
             'type': 'type',
             'status': 'status',
-            'client': 'client',
+            'id': 'id',
             'creator': 'creator',
             'auditors': 'auditors',
             'creation_date': 'creation_date'
         }
 
-        self._id = id
         self._name = name
         self._platform = platform
         self._lang = lang
         self._type = type
         self._status = status
-        self._client = client
+        self._id = id
         self._creator = creator
         self._auditors = auditors
         self._creation_date = creation_date
@@ -91,27 +86,6 @@ class Assessment(Model):
         :rtype: Assessment
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def id(self):
-        """Gets the id of this Assessment.
-
-
-        :return: The id of this Assessment.
-        :rtype: int
-        """
-        return self._id
-
-    @id.setter
-    def id(self, id):
-        """Sets the id of this Assessment.
-
-
-        :param id: The id of this Assessment.
-        :type id: int
-        """
-
-        self._id = id
 
     @property
     def name(self):
@@ -223,25 +197,25 @@ class Assessment(Model):
         self._status = status
 
     @property
-    def client(self):
-        """Gets the client of this Assessment.
+    def id(self):
+        """Gets the id of this Assessment.
 
 
-        :return: The client of this Assessment.
-        :rtype: Client
+        :return: The id of this Assessment.
+        :rtype: int
         """
-        return self._client
+        return self._id
 
-    @client.setter
-    def client(self, client):
-        """Sets the client of this Assessment.
+    @id.setter
+    def id(self, id):
+        """Sets the id of this Assessment.
 
 
-        :param client: The client of this Assessment.
-        :type client: Client
+        :param id: The id of this Assessment.
+        :type id: int
         """
 
-        self._client = client
+        self._id = id
 
     @property
     def creator(self):

@@ -1,7 +1,7 @@
 import pprint
+import typing
 
 import six
-import typing
 
 from sarna.routes.api import util
 

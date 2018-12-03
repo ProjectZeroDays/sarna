@@ -12,26 +12,26 @@ class FindingTemplateResume(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None):  # noqa: E501
+    def __init__(self, name=None, id=None):  # noqa: E501
         """FindingTemplateResume - a model defined in OpenAPI
 
-        :param id: The id of this FindingTemplateResume.  # noqa: E501
-        :type id: int
         :param name: The name of this FindingTemplateResume.  # noqa: E501
         :type name: str
+        :param id: The id of this FindingTemplateResume.  # noqa: E501
+        :type id: int
         """
         self.openapi_types = {
-            'id': int,
-            'name': str
+            'name': str,
+            'id': int
         }
 
         self.attribute_map = {
-            'id': 'id',
-            'name': 'name'
+            'name': 'name',
+            'id': 'id'
         }
 
-        self._id = id
         self._name = name
+        self._id = id
 
     @classmethod
     def from_dict(cls, dikt) -> 'FindingTemplateResume':
@@ -43,6 +43,31 @@ class FindingTemplateResume(Model):
         :rtype: FindingTemplateResume
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def name(self):
+        """Gets the name of this FindingTemplateResume.
+
+
+        :return: The name of this FindingTemplateResume.
+        :rtype: str
+        """
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        """Sets the name of this FindingTemplateResume.
+
+
+        :param name: The name of this FindingTemplateResume.
+        :type name: str
+        """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
+        if name is not None and len(name) > 64:
+            raise ValueError("Invalid value for `name`, length must be less than or equal to `64`")  # noqa: E501
+
+        self._name = name
 
     @property
     def id(self):
@@ -64,26 +89,3 @@ class FindingTemplateResume(Model):
         """
 
         self._id = id
-
-    @property
-    def name(self):
-        """Gets the name of this FindingTemplateResume.
-
-
-        :return: The name of this FindingTemplateResume.
-        :rtype: str
-        """
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        """Sets the name of this FindingTemplateResume.
-
-
-        :param name: The name of this FindingTemplateResume.
-        :type name: str
-        """
-        if name is not None and len(name) > 64:
-            raise ValueError("Invalid value for `name`, length must be less than or equal to `64`")  # noqa: E501
-
-        self._name = name

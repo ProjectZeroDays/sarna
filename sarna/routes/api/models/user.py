@@ -4,7 +4,6 @@ from __future__ import absolute_import
 
 from sarna.routes.api import util
 from sarna.routes.api.models.base_model_ import Model
-from sarna.routes.api.models.user_type import UserType
 
 
 class User(Model):
@@ -21,6 +20,7 @@ class User(Model):
         :param user_type: The user_type of this User.  # noqa: E501
         :type user_type: UserType
         """
+        from sarna.routes.api.models import UserType
         self.openapi_types = {
             'username': str,
             'user_type': UserType

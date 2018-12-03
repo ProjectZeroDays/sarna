@@ -21,7 +21,6 @@ class AffectedResource(Model):
         :type findings: FindingResume
         """
         from sarna.routes.api.models import FindingResume
-
         self.openapi_types = {
             'route': str,
             'findings': FindingResume

@@ -15,5 +15,8 @@ test-requirements.txt
 tox.ini
 .travis.yml
 sarna.routes.api/__init__.py
+sarna.routes.api/util.py
+sarna.routes.api/model/__init__.py
+sarna/routes/api/model/__init__.py
 
 

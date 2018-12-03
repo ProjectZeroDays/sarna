@@ -6,7 +6,6 @@ from typing import List  # noqa: F401
 
 from sarna.routes.api import util
 from sarna.routes.api.models.base_model_ import Model
-from sarna.routes.api.models.user import User
 
 
 class Client(Model):
@@ -15,21 +14,25 @@ class Client(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, short_name=None, long_name=None, creator=None, managers=None):  # noqa: E501
+    def __init__(self, short_name=None, long_name=None, id=None, creator=None, managers=None):  # noqa: E501
         """Client - a model defined in OpenAPI
 
         :param short_name: The short_name of this Client.  # noqa: E501
         :type short_name: str
         :param long_name: The long_name of this Client.  # noqa: E501
         :type long_name: str
+        :param id: The id of this Client.  # noqa: E501
+        :type id: int
         :param creator: The creator of this Client.  # noqa: E501
         :type creator: User
         :param managers: The managers of this Client.  # noqa: E501
         :type managers: List[User]
         """
+        from sarna.routes.api.models import User
         self.openapi_types = {
             'short_name': str,
             'long_name': str,
+            'id': int,
             'creator': User,
             'managers': List[User]
         }
@@ -37,12 +40,14 @@ class Client(Model):
         self.attribute_map = {
             'short_name': 'short_name',
             'long_name': 'long_name',
+            'id': 'id',
             'creator': 'creator',
             'managers': 'managers'
         }
 
         self._short_name = short_name
         self._long_name = long_name
+        self._id = id
         self._creator = creator
         self._managers = managers
 
@@ -106,6 +111,29 @@ class Client(Model):
             raise ValueError("Invalid value for `long_name`, length must be less than or equal to `128`")  # noqa: E501
 
         self._long_name = long_name
+
+    @property
+    def id(self):
+        """Gets the id of this Client.
+
+
+        :return: The id of this Client.
+        :rtype: int
+        """
+        return self._id
+
+    @id.setter
+    def id(self, id):
+        """Sets the id of this Client.
+
+
+        :param id: The id of this Client.
+        :type id: int
+        """
+        if id is None:
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
+
+        self._id = id
 
     @property
     def creator(self):
