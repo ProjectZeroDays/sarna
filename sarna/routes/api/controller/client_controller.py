@@ -17,13 +17,17 @@ from sarna.routes.api.models.envelop import Envelop  # noqa: E501
 from sarna.routes.api.models.paginated_envelop import PaginatedEnvelop  # noqa: E501
 
 
-def add_client_template(client_id):  # noqa: E501
+def add_client_template(client_id, info=None, file=None):  # noqa: E501
     """Add template to client
 
      # noqa: E501
 
     :param client_id: Client ID
     :type client_id: int
+    :param info: 
+    :type info: list | bytes
+    :param file: 
+    :type file: List[str]
 
     :rtype: None
     """

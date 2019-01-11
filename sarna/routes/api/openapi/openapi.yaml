@@ -404,16 +404,21 @@ paths:
           type: integer
         style: simple
       requestBody:
+        $ref: '#/components/requestBodies/inline_object'
         content:
           multipart/form-data:
             schema:
-              allOf:
-              - $ref: '#/components/schemas/Template'
-              - properties:
-                  file:
+              properties:
+                info[]:
+                  items:
+                    $ref: '#/components/schemas/Template'
+                  type: array
+                file[]:
+                  items:
                     format: binary
                     type: string
-                type: object
+                  type: array
+              type: object
       responses:
         404:
           content:
@@ -1203,6 +1208,12 @@ components:
         minimum: 0
         type: integer
       style: form
+  requestBodies:
+    inline_object:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object'
   responses:
     NotFound:
       content:
@@ -1736,6 +1747,8 @@ components:
           example: This is the template description
           maxLength: 128
           type: string
+      required:
+      - name
       type: object
     AssessmentBase:
       properties:
@@ -1795,6 +1808,18 @@ components:
           $ref: '#/components/schemas/UserType'
       required:
       - username
+      type: object
+    inline_object:
+      properties:
+        info[]:
+          items:
+            $ref: '#/components/schemas/Template'
+          type: array
+        file[]:
+          items:
+            format: binary
+            type: string
+          type: array
       type: object
   securitySchemes:
     bearerAuth:

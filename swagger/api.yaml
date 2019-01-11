@@ -232,16 +232,16 @@ paths:
           multipart/form-data:
             schema:
               type: object
-                properrties:
-                  info[]:
-                    type: array
-                    itmes:
-                      $ref: '#/components/schemas/Template'
-                  file[]:
-                    type: array
-                    items:
-                      type: string
-                      format: binary
+              properties:
+                info[]:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Template'
+                file[]:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
       responses:
         404:
           $ref: '#/components/responses/NotFound'
