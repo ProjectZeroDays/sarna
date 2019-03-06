@@ -564,7 +564,7 @@ paths:
   /finding/{finding_id}:
     delete:
       tags:
-      - assessment
+      - finding
       summary: Delete Finding Template
       operationId: deleteFindingTemplate
       parameters:
