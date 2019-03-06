@@ -391,6 +391,8 @@ def download_reports(assessment_id):
         mimetype='application/octet-stream',
         as_attachment=True,
         attachment_filename=report_file,
+        add_etags=False,
+        cache_timeout=0
     )
 
 
@@ -413,4 +415,6 @@ def download_report(assessment_id, template_name):
         mimetype='application/octet-stream',
         as_attachment=True,
         attachment_filename=report_file,
+        add_etags=False,
+        cache_timeout=0
     )
