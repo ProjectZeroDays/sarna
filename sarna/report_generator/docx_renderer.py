@@ -46,6 +46,9 @@ class DOCXRenderer(BaseRenderer):
         self._list_level = -1
         super().__init__()
 
+    def get_template(self):
+        return self._tpl
+
     def set_style(self, style: RenderStyle):
         self.style = style
 

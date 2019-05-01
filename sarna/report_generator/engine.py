@@ -14,7 +14,7 @@ from sarna.core.config import config
 from sarna.model import Assessment
 from sarna.model.client import Template
 from sarna.report_generator.docx_renderer import DOCXRenderer
-from sarna.report_generator.filters import markdown, score, locale, xref, bookmark, dateformat
+from sarna.report_generator.filters import markdown, score, locale, xref, bookmark, dateformat, bars
 from sarna.report_generator.style import get_document_render_styles
 from sarna.routes import parse_url
 
@@ -88,6 +88,7 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
         jinja2_env.filters['xref'] = xref
         jinja2_env.filters['bookmark'] = bookmark
         jinja2_env.filters['dateformat'] = dateformat
+        jinja2_env.filters['bars'] = bars
 
         jinja2_env.globals.update(
             language=assessment.lang,

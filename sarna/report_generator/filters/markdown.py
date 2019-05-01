@@ -2,7 +2,7 @@ import mistletoe
 from jinja2 import environmentfilter
 from markupsafe import Markup
 
-from sarna.report_generator.markdown import DOCXRenderer
+from sarna.report_generator.docx_renderer import DOCXRenderer
 
 
 @environmentfilter
