@@ -1,5 +1,6 @@
 import re
 
+
 __all__ = [
     'docx_escape', 'escape_url', 'list_level_style', 'make_run', 'make_paragraph', 'make_sequence', 'make_table',
     'make_table_row', 'make_table_cell'
@@ -51,8 +52,8 @@ _sequence_format = """
 </w:r>"""
 
 
-def make_sequence():
-    return _sequence_format.format(sec_name="Imagen", separator=": ")
+def make_sequence(seq_name, separator=": "):
+    return _sequence_format.format(sec_name=seq_name, separator=separator)
 
 
 def list_level_style(pPr, level):

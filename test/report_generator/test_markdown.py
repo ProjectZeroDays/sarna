@@ -1,3 +1,4 @@
+from sarna.report_generator.filters.markdown import _markdown_to_docx
 from sarna.report_generator.markdown import *
 
 SAMPLE_TABLE_01 = \
@@ -22,7 +23,7 @@ def test_table_generation():
     {}
     </w:body>
     </w:document>
-    """.format(markdown_to_docx(SAMPLE_TABLE_01, renderer))
+    """.format(_markdown_to_docx(SAMPLE_TABLE_01, renderer))
 
     valid_xml = ElementTree.fromstring(data)
 

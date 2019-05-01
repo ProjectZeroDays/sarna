@@ -8,22 +8,16 @@ from typing import *
 
 import jinja2
 from docxtpl import DocxTemplate
-from markupsafe import Markup
 from werkzeug.utils import secure_filename
 
 from sarna.core.config import config
 from sarna.model import Assessment
 from sarna.model.client import Template
 from sarna.model.enums import FindingStatus
-from sarna.report_generator.markdown import markdown_to_docx, DOCXRenderer
-from sarna.report_generator.scores import score_to_docx
+from sarna.report_generator.filters import markdown, score, locale, xref, bookmark, dateformat
+from sarna.report_generator.docx_renderer import DOCXRenderer
 from sarna.report_generator.style import get_document_render_styles
-from sarna.report_generator.xrefs import xref, bookmark
 from sarna.routes import parse_url
-
-
-def dateformat(value, fmt='%d/%m/%Y'):
-    return value.strftime(fmt)
 
 
 def clean_temp_dir():
@@ -81,19 +75,6 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
         template_path = os.path.join(assessment.client.template_path(), template.file)
 
         template_render = DocxTemplate(template_path)
-        render_styles = get_document_render_styles(template_path)
-
-        render = DOCXRenderer(template_render, image_path_converter)
-
-        def markdown(text, style='default'):
-            render.set_style(render_styles.get_style(style))
-            return Markup(markdown_to_docx(text, render))
-
-        def score(text, style='default'):
-            return Markup(score_to_docx(text, render_styles.get_style(style), assessment.lang))
-
-        def locale(choice):
-            return choice.translation_to(assessment.lang)
 
         finding_status_valid = {FindingStatus.Confirmed, FindingStatus.Reviewed}
         assessment_data = assessment.to_dict()
@@ -111,6 +92,13 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
         jinja2_env.filters['xref'] = xref
         jinja2_env.filters['bookmark'] = bookmark
         jinja2_env.filters['dateformat'] = dateformat
+
+        jinja2_env.globals.update(
+            language=assessment.lang,
+            docx_render_styles=get_document_render_styles(template_path),
+            docx_render=DOCXRenderer(template_render, image_path_converter)
+        )
+
 
         template_render.render(
             dict(

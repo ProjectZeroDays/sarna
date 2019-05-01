@@ -2,7 +2,7 @@ from sarna.model.enums.base_choice import BaseChoice
 from sarna.model.enums.language import Language
 
 
-class DocxSecuence(BaseChoice):
+class Secuence(BaseChoice):
     _init_ = "value translation"
     Image = 1, {
         Language.English: 'Image',

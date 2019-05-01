@@ -50,4 +50,4 @@ def bookmark(elem, attr):
     return Markup(_bookmark.format(ref=_ref_name(elem), run=run))
 
 
-__all__ = ['xref', 'bookmark']
+

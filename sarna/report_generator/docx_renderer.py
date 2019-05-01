@@ -1,11 +1,12 @@
 from typing import *
 
-import mistletoe
 from PIL import Image
 from docx.section import Section
 from docxtpl import DocxTemplate
 from mistletoe.base_renderer import BaseRenderer
 
+from sarna.model.enums import Language
+from sarna.model.enums.sequence import Secuence
 from sarna.report_generator import *
 from sarna.report_generator.style import RenderStyle
 
@@ -35,6 +36,7 @@ class DOCXRenderer(BaseRenderer):
     def __init__(self, docx: DocxTemplate, img_path_trans: Callable):
         self.warnings = set()
         self.style = None
+        self.lang = None
         self._tpl = docx
         self._img_path = img_path_trans
         self._suppress_ptag_stack = [False]
@@ -46,6 +48,9 @@ class DOCXRenderer(BaseRenderer):
 
     def set_style(self, style: RenderStyle):
         self.style = style
+
+    def set_language(self, lang: Language):
+        self.lang = lang
 
     def render_strong(self, token):
         self._suppress_rtag_stack.append(True)
@@ -84,7 +89,7 @@ class DOCXRenderer(BaseRenderer):
         self._mod_pstyle_stack.append(self.style.image_caption)
         return '<w:r><w:drawing>{pic}</w:drawing></w:r><w:br/>{seq}{run}'.format(
             pic=pic,
-            seq=make_sequence(),
+            seq=make_sequence(Secuence.Image.translation_to(self.lang)),
             run=inner
         )
 
@@ -186,12 +191,3 @@ class DOCXRenderer(BaseRenderer):
         self.warnings = self.warnings | self.style._warnings
 
         return ret
-
-
-def markdown_to_docx(markdown, render: DOCXRenderer):
-    ret = mistletoe.markdown(markdown + "\r\n", render)
-    for warn in render.warnings:
-        # TODO: something
-        print(warn)
-
-    return ret
