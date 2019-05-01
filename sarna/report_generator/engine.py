@@ -8,6 +8,7 @@ from typing import *
 
 import jinja2
 from docxtpl import DocxTemplate
+from markupsafe import Markup
 from werkzeug.utils import secure_filename
 
 from sarna.core.config import config
@@ -86,10 +87,10 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
 
         def markdown(text, style='default'):
             render.set_style(render_styles.get_style(style))
-            return markdown_to_docx(text, render)
+            return Markup(markdown_to_docx(text, render))
 
         def score(text, style='default'):
-            return score_to_docx(text, render_styles.get_style(style), assessment.lang)
+            return Markup(score_to_docx(text, render_styles.get_style(style), assessment.lang))
 
         def locale(choice):
             return choice.translation_to(assessment.lang)
@@ -101,7 +102,9 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
         )
 
         # apply jinja template
-        jinja2_env = jinja2.Environment()
+        jinja2_env = jinja2.Environment(
+            autoescape=True
+        )
         jinja2_env.filters['markdown'] = markdown
         jinja2_env.filters['score'] = score
         jinja2_env.filters['locale'] = locale
