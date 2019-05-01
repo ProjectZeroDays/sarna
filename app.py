@@ -1,5 +1,4 @@
 from flask import render_template, request
-from flask.json import JSONEncoder
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug import exceptions
 
@@ -10,18 +9,6 @@ from sarna.core.auth import login_manager
 from sarna.core.auth_engine import auth_controller
 from sarna.core.security import csrf, limiter
 from sarna.routes import clients, index, findings, users, assessments
-
-
-class CustomJSONEncoder(JSONEncoder):
-
-    def default(self, obj):
-        try:
-            return JSONEncoder.default(self, obj)
-        except TypeError:
-            return str(obj)
-
-
-app.json_encoder = CustomJSONEncoder
 
 
 def error_handler(err):

@@ -2,15 +2,28 @@ import itertools
 from os import path
 
 from flask import Flask, request
+from flask.json import JSONEncoder
 from werkzeug.contrib.fixers import ProxyFix
 
 from sarna.config import DevelopmentConfig, ProductionConfig, BaseConfig
+
+
+class CustomJSONEncoder(JSONEncoder):
+
+    def default(self, obj):
+        try:
+            return JSONEncoder.default(self, obj)
+        except TypeError:
+            return str(obj)
+
 
 app = Flask(
     __name__,
     template_folder=path.join(BaseConfig.PROJECT_PATH, 'templates'),
     static_folder=path.join(BaseConfig.PROJECT_PATH, 'static')
 )
+
+app.json_encoder = CustomJSONEncoder
 
 if app.config['ENV'] == 'development':
     app.config.from_object(DevelopmentConfig)
