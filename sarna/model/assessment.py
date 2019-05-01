@@ -82,11 +82,18 @@ class Assessment(Base, db.Model):
 
     auditors = db.relationship('User', secondary=assessment_audit, back_populates='audited_assessments')
 
+    @property
+    def active_findings(self):
+        return filter(
+            lambda finding: finding.status in {FindingStatus.Confirmed, FindingStatus.Reviewed},
+            self.findings
+        )
+
     def _aggregate_score(self, field):
         counter = Counter(
             map(
                 lambda x: getattr(x, field),
-                self.findings
+                self.active_findings
             )
         )
 

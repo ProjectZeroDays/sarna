@@ -13,9 +13,8 @@ from werkzeug.utils import secure_filename
 from sarna.core.config import config
 from sarna.model import Assessment
 from sarna.model.client import Template
-from sarna.model.enums import FindingStatus
-from sarna.report_generator.filters import markdown, score, locale, xref, bookmark, dateformat
 from sarna.report_generator.docx_renderer import DOCXRenderer
+from sarna.report_generator.filters import markdown, score, locale, xref, bookmark, dateformat
 from sarna.report_generator.style import get_document_render_styles
 from sarna.routes import parse_url
 
@@ -76,11 +75,8 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
 
         template_render = DocxTemplate(template_path)
 
-        finding_status_valid = {FindingStatus.Confirmed, FindingStatus.Reviewed}
         assessment_data = assessment.to_dict()
-        assessment_data['findings'] = list(
-            filter(lambda f: f.status in finding_status_valid, assessment.findings)
-        )
+        assessment_data['findings'] = assessment.active_findings
 
         # apply jinja template
         jinja2_env = jinja2.Environment(
@@ -98,7 +94,6 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
             docx_render_styles=get_document_render_styles(template_path),
             docx_render=DOCXRenderer(template_render, image_path_converter)
         )
-
 
         template_render.render(
             dict(
