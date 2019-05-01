@@ -91,13 +91,14 @@ class Assessment(Base, db.Model):
         )
 
         return [
-            counter[Score.Info],
-            counter[Score.Low],
-            counter[Score.Medium],
-            counter[Score.High],
-            counter[Score.Critical]
+            (Score.Info, counter[Score.Info]),
+            (Score.Low, counter[Score.Low]),
+            (Score.Medium, counter[Score.Medium]),
+            (Score.High, counter[Score.High]),
+            (Score.Critical, counter[Score.Critical])
         ]
 
+    @property
     def aggregate_finding_status(self):
         counter = Counter(
             map(
@@ -106,16 +107,18 @@ class Assessment(Base, db.Model):
             )
         )
         return [
-            counter[FindingStatus.Pending],
-            counter[FindingStatus.Reviewed],
-            counter[FindingStatus.Confirmed],
-            counter[FindingStatus.False_Positive],
-            counter[FindingStatus.Other]
+            (FindingStatus.Pending, counter[FindingStatus.Pending]),
+            (FindingStatus.Reviewed, counter[FindingStatus.Reviewed]),
+            (FindingStatus.Confirmed, counter[FindingStatus.Confirmed]),
+            (FindingStatus.False_Positive, counter[FindingStatus.False_Positive]),
+            (FindingStatus.Other, counter[FindingStatus.Other])
         ]
 
+    @property
     def aggregate_technical_risk(self):
         return self._aggregate_score('tech_risk')
 
+    @property
     def aggregate_business_risk(self):
         return self._aggregate_score('business_risk')
 

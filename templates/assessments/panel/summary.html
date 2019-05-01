@@ -35,6 +35,11 @@
             var ctx_tech_risk = document.getElementById('tech_risk_chart').getContext('2d');
             var ctx_bus_risk = document.getElementById('bus_risk_chart').getContext('2d');
             var ctx_find = document.getElementById('findings_status_chart').getContext('2d');
+
+            var data_tech = {{ assessment.aggregate_technical_risk | tojson }};
+            var data_business = {{ assessment.aggregate_business_risk | tojson }};
+            var data_finding_stat = {{ assessment.aggregate_finding_status | tojson }};
+
             var backgrounds = [
                 '#5bc0de',
                 '#5cb85c',
@@ -51,10 +56,10 @@
             new Chart(ctx_tech_risk, {
                 type: 'bar',
                 data: {
-                    labels: ["Info", "Low", "Medium", "High", "Critical"],
+                    labels: data_tech.map(elem => elem[0]),
                     datasets: [{
                         backgroundColor: backgrounds,
-                        data: {{ assessment.aggregate_technical_risk() | tojson }}
+                        data: data_tech.map(elem => elem[1])
                     }]
                 },
                 options: options
@@ -62,10 +67,10 @@
             new Chart(ctx_bus_risk, {
                 type: 'bar',
                 data: {
-                    labels: ["Info", "Low", "Medium", "High", "Critical"],
+                    labels: data_business.map(elem => elem[0]),
                     datasets: [{
                         backgroundColor: backgrounds,
-                        data: {{ assessment.aggregate_business_risk() | tojson }}
+                        data: data_business.map(elem => elem[1])
                     }]
                 },
                 options: options
@@ -73,7 +78,7 @@
             new Chart(ctx_find, {
                 type: 'pie',
                 data: {
-                    labels: ["Pending", "Reviewed", "Confirmed", "False Positive", "Other"],
+                    labels: data_finding_stat.map(elem => elem[0]),
                     datasets: [{
                         backgroundColor: [
                             '#f0ad4e',
@@ -82,7 +87,7 @@
                             '#d9534f',
                             '#222'
                         ],
-                        data: {{ assessment.aggregate_finding_status() | tojson }}
+                        data: data_finding_stat.map(elem => elem[1])
                     }]
                 }
             });
