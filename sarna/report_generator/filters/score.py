@@ -14,7 +14,7 @@ def score(env, text, style='default'):
 
 
 def _score_to_docx(score: Score, style: RenderStyle, lang: Language):
-    ret = make_run(getattr(style, score.name.lower()), score.translation_to(lang))
+    ret = make_run(getattr(style, score.name.lower()), score.translate_to(lang))
     for warn in style._warnings:
         # TODO: something
         print(warn)

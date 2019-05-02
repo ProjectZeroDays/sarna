@@ -92,7 +92,7 @@ class DOCXRenderer(BaseRenderer):
         self._mod_pstyle_stack.append(self.style.image_caption)
         return '<w:r><w:drawing>{pic}</w:drawing></w:r><w:br/>{seq}{run}'.format(
             pic=pic,
-            seq=make_sequence(Secuence.Image.translation_to(self.lang)),
+            seq=make_sequence(Secuence.Image.translate_to(self.lang)),
             run=inner
         )
 

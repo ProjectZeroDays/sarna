@@ -6,10 +6,11 @@ RUN apk --update --no-cache add \
 	mkdir -p /sarna/uploaded_data
 
 ADD requirements.txt /tmp/
-RUN apk --no-cache add --virtual build-deps build-base libxslt-dev python3-dev jpeg-dev zlib-dev postgresql-dev musl-dev&& \
+RUN apk --no-cache add --virtual build-deps build-base libxslt-dev python3-dev jpeg-dev zlib-dev postgresql-dev musl-dev \
+        libpng-dev freetype-dev libgfortran py-numpy-dev && \
     pip install -r /tmp/requirements.txt && \
     apk del build-deps &&\
-    apk --no-cache add libmagic libxslt jpeg zlib libpq
+    apk --no-cache add libmagic libxslt jpeg zlib libpq libpng freetype
 
 ADD static/package.json /sarna/static/
 RUN cd /sarna/static && yarn install

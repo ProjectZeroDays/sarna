@@ -77,6 +77,9 @@ def generate_reports_bundle(assessment: Assessment, templates: Collection[Templa
 
         assessment_data = assessment.to_dict()
         assessment_data['findings'] = assessment.active_findings
+        assessment_data['aggregate_business_risk'] = assessment.aggregate_business_risk
+        assessment_data['aggregate_finding_status'] = assessment.aggregate_finding_status
+        assessment_data['aggregate_technical_risk'] = assessment.aggregate_technical_risk
 
         # apply jinja template
         jinja2_env = jinja2.Environment(

@@ -3,4 +3,4 @@ from jinja2 import environmentfilter
 
 @environmentfilter
 def locale(env, choice):
-    return choice.translation_to(env.globals['language'])
+    return choice.translate_to(env.globals['language'])

@@ -44,7 +44,7 @@ class BaseChoice(OrderedEnum):
     def __hash__(self):
         return self.value
 
-    def translation_to(self, lang):
+    def translate_to(self, lang):
         translation = getattr(self, 'translation', None)
         if translation is None or lang not in translation or not translation[lang]:
             desc = getattr(self, 'desc', None)

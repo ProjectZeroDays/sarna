@@ -5,6 +5,8 @@ from jinja2 import environmentfilter
 from markupsafe import Markup
 from matplotlib.ticker import MaxNLocator
 
+from sarna.report_generator.docx_renderer import _get_img_prefered_size
+
 _colors = (
     '#5bc0de',
     '#5cb85c',
@@ -16,7 +18,10 @@ _colors = (
 
 @environmentfilter
 def bars(env, data, title='', xlabel='', ylabel=''):
-    bars_names = tuple(x[0] for x in data)
+    template = env.globals['docx_render'].get_template()
+    lang = env.globals['language']
+
+    bars_names = tuple(x[0].translate_to(lang) for x in data)
     heights = tuple(x[1] for x in data)
     y_pos = range(len(bars_names))
 
@@ -53,9 +58,10 @@ def bars(env, data, title='', xlabel='', ylabel=''):
 
     with tempfile.NamedTemporaryFile(suffix='.png') as png:
         fig.savefig(png)
-        template = env.globals['docx_render'].get_template()
+        section = template.docx.sections[0]
 
+        width, height = _get_img_prefered_size(png, section)
         pic = template.docx._part.new_pic_inline(
-            png
+            png, width, height
         ).xml
         return Markup('<w:r><w:drawing>{pic}</w:drawing></w:r><w:br/>'.format(pic=pic))
